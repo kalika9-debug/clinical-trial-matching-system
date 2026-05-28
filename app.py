@@ -1,6 +1,7 @@
 # =====================================================
 # EVOASTRA AI
-# COMPLETE WORKING PROJECT
+# COMPLETE WORKING HEALTHCARE AI PROJECT
+# FIXED VERSION
 # =====================================================
 
 import streamlit as st
@@ -20,7 +21,7 @@ st.set_page_config(
 )
 
 # =====================================================
-# CSS
+# CUSTOM CSS
 # =====================================================
 
 st.markdown("""
@@ -132,6 +133,24 @@ section[data-testid="stSidebar"]{
 
     border-right:
     1px solid #e5e7eb;
+}
+
+/* =====================================================
+METRICS
+===================================================== */
+
+.metric-card{
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    box-shadow:
+    0 4px 12px rgba(0,0,0,0.06);
 }
 
 </style>
@@ -448,11 +467,11 @@ if find_btn:
     # =================================================
 
     trial_embeddings = model.encode(
-        data["Description"]
+        data["Description"].tolist()
     )
 
     patient_embedding = model.encode(
-        [patient_text]
+        [str(patient_text)]
     )
 
     # =================================================
@@ -564,24 +583,42 @@ m1, m2, m3 = st.columns(3)
 
 with m1:
 
-    st.metric(
-        "AI Model",
-        "MiniLM"
-    )
+    st.markdown("""
+
+    <div class="metric-card">
+
+    <h3>🧠 AI Model</h3>
+    <h2>MiniLM</h2>
+
+    </div>
+
+    """, unsafe_allow_html=True)
 
 with m2:
 
-    st.metric(
-        "Accuracy",
-        "94%"
-    )
+    st.markdown("""
+
+    <div class="metric-card">
+
+    <h3>🎯 Accuracy</h3>
+    <h2>94%</h2>
+
+    </div>
+
+    """, unsafe_allow_html=True)
 
 with m3:
 
-    st.metric(
-        "Search Type",
-        "Semantic AI"
-    )
+    st.markdown("""
+
+    <div class="metric-card">
+
+    <h3>⚡ Search Type</h3>
+    <h2>Semantic AI</h2>
+
+    </div>
+
+    """, unsafe_allow_html=True)
 
 # =====================================================
 # FOOTER
