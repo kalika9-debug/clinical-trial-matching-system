@@ -1,5 +1,6 @@
 # =========================================================
 # EVOASTRA CLINICAL TRIAL AI
+# FUTURISTIC BIOTECH AI DASHBOARD
 # =========================================================
 
 import streamlit as st
@@ -15,9 +16,10 @@ import matplotlib.pyplot as plt
 # =========================================================
 
 st.set_page_config(
-    page_title="EVOASTRA Clinical Trial AI",
-    page_icon="🩺",
-    layout="wide"
+    page_title="EVOASTRA AI",
+    page_icon="🧬",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 # =========================================================
@@ -27,73 +29,305 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-html, body {
-    font-family: 'Times New Roman', serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
 }
+
+/* =========================================================
+BACKGROUND
+========================================================= */
 
 .stApp {
-    background: linear-gradient(to right, #fff5f5, #ffeaea);
+
+    background:
+    radial-gradient(circle at top left,
+    rgba(255,0,76,0.15),
+    transparent 25%),
+
+    radial-gradient(circle at bottom right,
+    rgba(255,0,76,0.10),
+    transparent 25%),
+
+    linear-gradient(
+        135deg,
+        #050505,
+        #120000,
+        #1a0000
+    );
+
+    color: white;
 }
 
-/* INPUTS */
+/* =========================================================
+GLASSMORPHISM
+========================================================= */
+
+.glass {
+
+    background: rgba(255,255,255,0.06);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 24px;
+
+    padding: 25px;
+
+    box-shadow:
+    0 8px 32px rgba(0,0,0,0.35);
+
+    transition: 0.3s ease;
+
+    margin-bottom: 20px;
+}
+
+.glass:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+    0 0 20px rgba(255,0,76,0.15),
+    0 0 40px rgba(255,0,76,0.10);
+}
+
+/* =========================================================
+HEADINGS
+========================================================= */
+
+h1, h2, h3 {
+
+    color: white !important;
+    font-weight: 700 !important;
+}
+
+h4, h5 {
+
+    color: #ffb3c1 !important;
+}
+
+/* =========================================================
+INPUTS
+========================================================= */
 
 .stTextInput input,
 .stTextArea textarea,
 .stNumberInput input {
 
-    background-color: white !important;
-    color: black !important;
-    border: 2px solid #b30000 !important;
-    border-radius: 10px !important;
+    background: rgba(255,255,255,0.06) !important;
+
+    color: white !important;
+
+    border: 1px solid rgba(255,255,255,0.15) !important;
+
+    border-radius: 14px !important;
+
+    padding: 12px !important;
 }
 
-/* SELECT BOX */
+/* =========================================================
+SELECT BOX
+========================================================= */
 
 div[data-baseweb="select"] > div {
-    background-color: white !important;
-    border: 2px solid #b30000 !important;
-    border-radius: 10px !important;
+
+    background: rgba(255,255,255,0.06) !important;
+
+    border: 1px solid rgba(255,255,255,0.15) !important;
+
+    border-radius: 14px !important;
+
+    color: white !important;
 }
 
-/* BUTTONS */
+/* =========================================================
+BUTTONS
+========================================================= */
 
 .stButton > button {
 
-    background: linear-gradient(to right, #7b0000, #b30000);
+    background:
+    linear-gradient(
+        135deg,
+        #ff003c,
+        #8b0000
+    );
+
     color: white !important;
+
     border: none;
-    border-radius: 12px;
-    height: 50px;
+
+    border-radius: 14px;
+
+    height: 52px;
+
     width: 100%;
-    font-size: 18px;
-    font-weight: bold;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    transition: 0.3s ease;
+
+    box-shadow:
+    0 0 15px rgba(255,0,76,0.4);
 }
 
 .stButton > button:hover {
 
-    background: linear-gradient(to right, #5c0000, #8B0000);
-    color: white !important;
+    transform: scale(1.02);
+
+    box-shadow:
+    0 0 25px rgba(255,0,76,0.8);
 }
 
-/* HEADINGS */
-
-h1, h2, h3 {
-    color: #5c0000 !important;
-}
-
-/* SIDEBAR */
+/* =========================================================
+SIDEBAR
+========================================================= */
 
 section[data-testid="stSidebar"] {
-    background-color: #f7f7f7;
+
+    background:
+    linear-gradient(
+        180deg,
+        rgba(20,20,20,0.95),
+        rgba(40,0,0,0.95)
+    );
+
+    border-right:
+    1px solid rgba(255,255,255,0.08);
 }
 
-/* FOOTER */
+/* =========================================================
+METRICS
+========================================================= */
+
+.metric-card {
+
+    background: rgba(255,255,255,0.05);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 20px;
+
+    padding: 20px;
+
+    text-align: center;
+
+    transition: 0.3s ease;
+}
+
+.metric-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+    0 0 18px rgba(255,0,76,0.25);
+}
+
+/* =========================================================
+TABLES
+========================================================= */
+
+[data-testid="stDataFrame"] {
+
+    background: rgba(255,255,255,0.04);
+
+    border-radius: 18px;
+
+    padding: 10px;
+}
+
+/* =========================================================
+FOOTER
+========================================================= */
 
 .footer {
+
     text-align: center;
-    color: #7b0000;
-    margin-top: 40px;
-    font-weight: bold;
+
+    color: #ff4d6d;
+
+    margin-top: 50px;
+
+    font-size: 15px;
+
+    opacity: 0.8;
+}
+
+/* =========================================================
+SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+
+    background: #8b0000;
+
+    border-radius: 20px;
+}
+
+/* =========================================================
+HERO ANIMATION
+========================================================= */
+
+.hero {
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,0,76,0.25),
+        rgba(139,0,0,0.2)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.1);
+
+    border-radius: 28px;
+
+    padding: 45px;
+
+    text-align: center;
+
+    box-shadow:
+    0 0 25px rgba(255,0,76,0.25);
+
+    margin-bottom: 30px;
+}
+
+.typing {
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    border-right: 2px solid white;
+
+    width: 0;
+
+    animation:
+    typing 4s steps(40,end) forwards,
+    blink .8s infinite;
+}
+
+@keyframes typing {
+
+    from { width: 0 }
+
+    to { width: 100% }
+}
+
+@keyframes blink {
+
+    50% {
+        border-color: transparent;
+    }
 }
 
 </style>
@@ -113,22 +347,22 @@ if "logged_in" not in st.session_state:
 def hero():
 
     st.markdown("""
-    <div style="
-        background: linear-gradient(135deg,#7b0000,#b30000);
-        padding:40px;
-        border-radius:25px;
-        text-align:center;
-        color:white;
-        margin-bottom:30px;
-    ">
+    <div class="hero">
 
-        <h1 style="color:white;">
-            🩺 EVOASTRA CLINICAL TRIAL AI
+        <h1 style="
+        font-size:52px;
+        margin-bottom:10px;
+        ">
+        🧬 EVOASTRA AI
         </h1>
 
-        <h4 style="color:#ffeaea;">
-            AI-Powered Biomedical Retrieval &
-            Clinical Trial Recommendation System
+        <h4 class="typing"
+        style="
+        color:#ffd6de;
+        font-weight:400;
+        font-size:20px;
+        ">
+        Futuristic Clinical Trial Intelligence Platform
         </h4>
 
     </div>
@@ -142,49 +376,35 @@ def login_page():
 
     hero()
 
-    st.subheader("❤️ Why Healthcare Matters")
+    st.markdown('<div class="glass">', unsafe_allow_html=True)
 
-    st.write("""
-Healthcare helps improve quality of life,
-supports early disease detection,
-and improves medical research.
+    st.subheader("🔐 Secure AI Login")
 
-Artificial Intelligence in healthcare can:
-- Improve diagnosis
-- Match patients to clinical trials
-- Support doctors
-- Improve treatment planning
-""")
-
-    st.markdown("---")
-
-    st.subheader("🔐 Login")
-
-    username = st.text_input("👤 Username")
+    username = st.text_input("Username")
 
     password = st.text_input(
-        "🔑 Password",
+        "Password",
         type="password"
     )
 
-    login_btn = st.button("🚀 Login")
+    login_btn = st.button("🚀 Access Dashboard")
 
     if login_btn:
 
         if username.strip() == "" or password.strip() == "":
 
-            st.warning(
-                "Please enter username and password"
-            )
+            st.warning("Enter credentials")
 
         else:
 
             st.session_state.logged_in = True
             st.session_state.username = username
 
-            st.success("Login Successful ✅")
+            st.success("Authentication Successful ✅")
 
             st.rerun()
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================================================
 # LOGIN CHECK
@@ -201,21 +421,27 @@ if not st.session_state.logged_in:
 
 with st.sidebar:
 
+    st.markdown("""
+    <h2 style="text-align:center;">
+    🧬 EVOASTRA
+    </h2>
+    """, unsafe_allow_html=True)
+
     st.success(
-        f"👋 Welcome {st.session_state.username}"
+        f"Welcome {st.session_state.username}"
     )
 
     st.markdown("---")
 
-    st.subheader("🚀 Features")
+    st.markdown("""
+    ### 🚀 Core Technologies
 
-    st.write("""
-✔ AI Trial Matching  
-✔ BioClinicalBERT  
-✔ FAISS Semantic Search  
-✔ Biomedical NLP  
-✔ Clinical Trial Retrieval  
-""")
+    ✔ BioClinicalBERT  
+    ✔ FAISS Vector Search  
+    ✔ Biomedical NLP  
+    ✔ Semantic Retrieval  
+    ✔ AI Trial Intelligence  
+    """)
 
     st.markdown("---")
 
@@ -233,7 +459,7 @@ with st.sidebar:
 hero()
 
 # =========================================================
-# LOAD MODEL
+# MODEL
 # =========================================================
 
 @st.cache_resource
@@ -248,7 +474,7 @@ def load_model():
 model = load_model()
 
 # =========================================================
-# FETCH CLINICAL TRIALS
+# FETCH TRIALS
 # =========================================================
 
 @st.cache_data
@@ -284,44 +510,37 @@ def fetch_trials(search_term):
         try:
 
             protocol = study.get(
-                "protocolSection",
-                {}
+                "protocolSection", {}
             )
 
             identification = protocol.get(
-                "identificationModule",
-                {}
+                "identificationModule", {}
             )
 
             conditions = protocol.get(
-                "conditionsModule",
-                {}
+                "conditionsModule", {}
             )
 
             eligibility = protocol.get(
-                "eligibilityModule",
-                {}
+                "eligibilityModule", {}
             )
 
             rows.append({
 
                 "NCTId":
                 identification.get(
-                    "nctId",
-                    "N/A"
+                    "nctId", "N/A"
                 ),
 
                 "BriefTitle":
                 identification.get(
-                    "briefTitle",
-                    "No Title"
+                    "briefTitle", "No Title"
                 ),
 
                 "Condition":
                 str(
                     conditions.get(
-                        "conditions",
-                        []
+                        "conditions", []
                     )
                 ),
 
@@ -339,9 +558,11 @@ def fetch_trials(search_term):
 
     clean_df["text"] = (
 
-        clean_df["BriefTitle"].astype(str) + " " +
+        clean_df["BriefTitle"].astype(str)
+        + " " +
 
-        clean_df["Condition"].astype(str) + " " +
+        clean_df["Condition"].astype(str)
+        + " " +
 
         clean_df["EligibilityCriteria"].astype(str)
     )
@@ -349,7 +570,7 @@ def fetch_trials(search_term):
     return clean_df
 
 # =========================================================
-# AI CHATBOT
+# AI RESPONSE
 # =========================================================
 
 def ai_response(question):
@@ -358,74 +579,34 @@ def ai_response(question):
 
     if "cancer" in q:
 
-        return """
-Cancer clinical trials test new medicines,
-therapies, and treatments to improve survival.
-"""
+        return "Cancer trials evaluate next-generation therapies and survival treatments."
 
     elif "diabetes" in q:
 
-        return """
-Diabetes trials focus on insulin treatment,
-glucose monitoring,
-and lifestyle management.
-"""
+        return "Diabetes clinical research focuses on glucose regulation and insulin innovation."
 
     elif "heart" in q:
 
-        return """
-Heart disease trials evaluate surgeries,
-medications,
-and cardiovascular therapies.
-"""
+        return "Cardiovascular trials evaluate surgeries, medications, and AI diagnostics."
 
     elif "covid" in q:
 
-        return """
-COVID-19 trials study vaccines,
-antiviral medicines,
-and long-term effects.
-"""
+        return "COVID-19 studies analyze vaccines, antiviral therapies, and long-term effects."
 
     elif "bert" in q:
 
-        return """
-BioClinicalBERT converts biomedical text
-into semantic vector embeddings.
-"""
+        return "BioClinicalBERT transforms biomedical text into contextual embeddings."
 
     elif "faiss" in q:
 
-        return """
-FAISS is a vector database library
-used for fast similarity search.
-"""
-
-    elif "trial" in q:
-
-        return """
-Clinical trials help researchers evaluate
-the safety and effectiveness of treatments.
-"""
-
-    elif "hello" in q or "hi" in q:
-
-        return "Hello 👋 Welcome to EVOASTRA AI"
+        return "FAISS enables ultra-fast vector similarity search for semantic retrieval."
 
     else:
 
-        return """
-I can help with:
-• Clinical Trials
-• Diseases
-• Eligibility
-• BioClinicalBERT
-• FAISS
-• Healthcare AI
-"""
+        return "I can assist with clinical trials, biomedical AI, FAISS, diseases, and healthcare analytics."
 
 # =========================================================
-# MAIN DASHBOARD
+# MAIN GRID
 # =========================================================
 
 col1, col2 = st.columns([1,1])
@@ -436,10 +617,12 @@ col1, col2 = st.columns([1,1])
 
 with col1:
 
-    st.subheader("🧬 Patient Trial Matching")
+    st.markdown('<div class="glass">', unsafe_allow_html=True)
+
+    st.subheader("🧬 AI Trial Matching")
 
     disease = st.selectbox(
-        "Select Disease",
+        "Disease",
         [
             "breast cancer",
             "lung cancer",
@@ -451,7 +634,7 @@ with col1:
 
     st.markdown("---")
 
-    st.subheader("🩺 Patient Information")
+    st.subheader("🩺 Patient Profile")
 
     age = st.number_input(
         "Age",
@@ -478,13 +661,15 @@ with col1:
     )
 
     patient_query = st.text_area(
-        "Enter Patient Information",
+        "Patient Clinical Notes",
         height=180
     )
 
     find_trials = st.button(
-        "🔍 Find Matching Trials"
+        "🔍 Analyze Biomedical Match"
     )
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================================================
 # RIGHT PANEL
@@ -492,28 +677,26 @@ with col1:
 
 with col2:
 
+    st.markdown('<div class="glass">', unsafe_allow_html=True)
+
     st.subheader("🤖 EVOASTRA AI Assistant")
 
     user_question = st.text_input(
-        "Ask Any Healthcare Question"
+        "Ask Healthcare AI"
     )
 
-    ask_ai = st.button(
-        "🤖 Ask AI"
-    )
+    ask_ai = st.button("⚡ Generate AI Response")
 
     if ask_ai:
 
-        response = ai_response(
-            user_question
-        )
+        response = ai_response(user_question)
 
-        st.chat_message(
-            "assistant"
-        ).write(response)
+        st.chat_message("assistant").write(response)
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================================================
-# MATCHING LOGIC
+# MATCHING
 # =========================================================
 
 if find_trials:
@@ -530,28 +713,18 @@ if find_trials:
         final_query = auto_query
 
     with st.spinner(
-        "🧠 AI analyzing biomedical profile..."
+        "🧠 Running biomedical semantic analysis..."
     ):
 
         clean_df = fetch_trials(disease)
 
         if clean_df.empty:
 
-            st.error(
-                "No clinical trials found."
-            )
+            st.error("No trials found.")
 
         else:
 
             texts = clean_df["text"].tolist()
-
-            if len(texts) == 0:
-
-                st.error(
-                    "No trial text available."
-                )
-
-                st.stop()
 
             embeddings = model.encode(
                 texts,
@@ -562,9 +735,7 @@ if find_trials:
                 embeddings
             ).astype("float32")
 
-            faiss.normalize_L2(
-                embeddings
-            )
+            faiss.normalize_L2(embeddings)
 
             index = faiss.IndexFlatIP(
                 embeddings.shape[1]
@@ -600,16 +771,12 @@ if find_trials:
             )
 
             st.success(
-                "Top Matching Trials Retrieved ✅"
+                "Top Clinical Trials Retrieved ✅"
             )
 
-            # =========================================================
-            # TABLE
-            # =========================================================
+            st.markdown('<div class="glass">', unsafe_allow_html=True)
 
-            st.subheader(
-                "🎯 Top Trial Matches"
-            )
+            st.subheader("🎯 Trial Matches")
 
             st.dataframe(
                 top_trials[
@@ -622,113 +789,37 @@ if find_trials:
                 use_container_width=True
             )
 
+            st.markdown('</div>', unsafe_allow_html=True)
+
             # =========================================================
             # LINKS
             # =========================================================
 
-            st.subheader(
-                "🔗 Clinical Trial Links"
-            )
+            st.markdown('<div class="glass">', unsafe_allow_html=True)
+
+            st.subheader("🔗 Clinical Trial Access")
 
             for _, row in top_trials.iterrows():
 
                 st.markdown(
-                    f"🔹 [{row['BriefTitle']}](https://clinicaltrials.gov/study/{row['NCTId']})"
+                    f"""
+                    🔹 [{row['BriefTitle']}]
+                    (https://clinicaltrials.gov/study/{row['NCTId']})
+                    """
                 )
 
-            # =========================================================
-            # DISEASE INFO
-            # =========================================================
-
-            st.subheader(
-                "🩺 Disease Information"
-            )
-
-            disease_info = {
-
-                "breast cancer": {
-                    "about":
-                    "Breast cancer develops in breast tissue.",
-
-                    "precautions": [
-                        "Regular screening",
-                        "Exercise regularly",
-                        "Healthy diet",
-                        "Avoid smoking"
-                    ]
-                },
-
-                "lung cancer": {
-                    "about":
-                    "Lung cancer affects lung tissues.",
-
-                    "precautions": [
-                        "Avoid smoking",
-                        "Reduce pollution exposure",
-                        "Healthy lifestyle",
-                        "Regular checkups"
-                    ]
-                },
-
-                "diabetes": {
-                    "about":
-                    "Diabetes affects blood sugar regulation.",
-
-                    "precautions": [
-                        "Reduce sugar intake",
-                        "Exercise daily",
-                        "Monitor glucose",
-                        "Maintain healthy weight"
-                    ]
-                },
-
-                "heart disease": {
-                    "about":
-                    "Heart disease affects cardiovascular health.",
-
-                    "precautions": [
-                        "Exercise regularly",
-                        "Low-fat diet",
-                        "Avoid smoking",
-                        "Control blood pressure"
-                    ]
-                },
-
-                "covid-19": {
-                    "about":
-                    "COVID-19 is a viral infectious disease.",
-
-                    "precautions": [
-                        "Wash hands regularly",
-                        "Vaccination",
-                        "Wear masks if needed",
-                        "Maintain hygiene"
-                    ]
-                }
-            }
-
-            if disease in disease_info:
-
-                st.info(
-                    disease_info[disease]["about"]
-                )
-
-                st.write("### Precautions")
-
-                for p in disease_info[disease]["precautions"]:
-
-                    st.write("✔", p)
+            st.markdown('</div>', unsafe_allow_html=True)
 
             # =========================================================
             # CHART
             # =========================================================
 
-            st.subheader(
-                "📈 Similarity Score Analysis"
-            )
+            st.markdown('<div class="glass">', unsafe_allow_html=True)
+
+            st.subheader("📈 Similarity Analysis")
 
             fig, ax = plt.subplots(
-                figsize=(7,4)
+                figsize=(8,4)
             )
 
             ax.bar(
@@ -736,77 +827,119 @@ if find_trials:
                 top_trials["Similarity"]
             )
 
-            ax.set_xlabel("Trial ID")
+            ax.set_facecolor("#0f0f0f")
+
+            fig.patch.set_facecolor("#0f0f0f")
+
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+
+            ax.grid(alpha=0.2)
+
+            ax.set_xlabel(
+                "Trial ID",
+                color="white"
+            )
 
             ax.set_ylabel(
-                "Similarity Score"
+                "Similarity",
+                color="white"
             )
+
+            ax.tick_params(colors='white')
 
             ax.set_title(
-                "Top Trial Similarity Scores"
+                "Semantic Similarity Scores",
+                color="white"
             )
 
+            plt.xticks(rotation=20)
+
             st.pyplot(fig)
+
+            st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================================================
 # METRICS
 # =========================================================
 
-st.subheader("📊 AI System Metrics")
+st.subheader("📊 AI Infrastructure")
 
 m1, m2, m3, m4 = st.columns(4)
 
 with m1:
 
-    st.metric(
-        "Embedding Model",
-        "BioClinicalBERT"
-    )
+    st.markdown("""
+    <div class="metric-card">
+        <h3>🧠</h3>
+        <h4>BioClinicalBERT</h4>
+        <p>Embedding Engine</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 with m2:
 
-    st.metric(
-        "Vector Database",
-        "FAISS"
-    )
+    st.markdown("""
+    <div class="metric-card">
+        <h3>⚡</h3>
+        <h4>FAISS</h4>
+        <p>Vector Database</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 with m3:
 
-    st.metric(
-        "Semantic Accuracy",
-        "94%"
-    )
+    st.markdown("""
+    <div class="metric-card">
+        <h3>🎯</h3>
+        <h4>94%</h4>
+        <p>Semantic Accuracy</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 with m4:
 
-    st.metric(
-        "AI Confidence",
-        "98%"
-    )
+    st.markdown("""
+    <div class="metric-card">
+        <h3>🚀</h3>
+        <h4>98%</h4>
+        <p>AI Confidence</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # =========================================================
 # FEATURES
 # =========================================================
 
-st.subheader("🚀 EVOASTRA Features")
+st.markdown('<div class="glass">', unsafe_allow_html=True)
+
+st.subheader("🚀 Platform Features")
 
 st.write("""
-✔ AI-Based Clinical Trial Matching  
-✔ Biomedical NLP  
+
+✔ AI-Based Trial Intelligence  
+✔ Biomedical Semantic Retrieval  
 ✔ BioClinicalBERT Embeddings  
-✔ FAISS Semantic Search  
-✔ Disease Information  
-✔ Precautions & Prevention  
-✔ Clinical Trial Retrieval  
-✔ AI Healthcare Dashboard  
+✔ FAISS Vector Search  
+✔ Clinical Research Analytics  
+✔ Healthcare AI Dashboard  
+✔ AI Patient Matching  
+✔ Biomedical NLP Engine  
+
 """)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================================================
 # FOOTER
 # =========================================================
 
 st.markdown("""
+
 <div class="footer">
-Developed for EVOASTRA Internship Project • Biomedical AI Platform
+
+EVOASTRA AI • Futuristic Biomedical Intelligence Platform
+
 </div>
+
 """, unsafe_allow_html=True)
