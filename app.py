@@ -1,6 +1,6 @@
 # =========================================================
 # EVOASTRA AI
-# FULL MODERN HEALTHCARE AI DASHBOARD
+# MODERN HEALTHCARE AI DASHBOARD
 # =========================================================
 
 import streamlit as st
@@ -48,7 +48,7 @@ BACKGROUND
     background:
     linear-gradient(
         135deg,
-        #f5f9ff,
+        #f4f7ff,
         #eef4ff
     );
 
@@ -56,7 +56,7 @@ BACKGROUND
 }
 
 /* =========================================================
-MAIN CONTAINER
+REMOVE STREAMLIT PADDING
 ========================================================= */
 
 .block-container {
@@ -71,33 +71,35 @@ HERO SECTION
 
     background: white;
 
-    border-radius: 28px;
+    border-radius: 24px;
 
-    padding: 60px 40px;
+    padding: 55px 40px;
 
     text-align: center;
 
     box-shadow:
-    0 10px 30px rgba(0,0,0,0.06);
-
-    border:
-    1px solid rgba(0,0,0,0.04);
+    0 8px 24px rgba(0,0,0,0.06);
 
     margin-bottom: 30px;
+
+    border:
+    1px solid #e5e7eb;
 }
 
-.hero h1 {
+.hero-title {
 
-    font-size: 54px;
+    font-size: 52px;
 
     font-weight: 700;
 
     color: #2563eb;
 
     margin-bottom: 12px;
+
+    letter-spacing: -1px;
 }
 
-.hero p {
+.hero-subtitle {
 
     font-size: 18px;
 
@@ -114,17 +116,17 @@ CARDS
 
     background: white;
 
-    border-radius: 24px;
+    border-radius: 22px;
 
     padding: 28px;
 
-    box-shadow:
-    0 8px 24px rgba(0,0,0,0.05);
+    margin-bottom: 24px;
 
     border:
-    1px solid rgba(0,0,0,0.04);
+    1px solid #e5e7eb;
 
-    margin-bottom: 24px;
+    box-shadow:
+    0 6px 20px rgba(0,0,0,0.04);
 }
 
 /* =========================================================
@@ -142,9 +144,11 @@ INPUTS
 
     padding: 12px !important;
 
-    background: #f9fbff !important;
+    background:
+    #f9fbff !important;
 
-    color: #111827 !important;
+    color:
+    #111827 !important;
 }
 
 /* =========================================================
@@ -158,7 +162,8 @@ div[data-baseweb="select"] > div {
     border:
     1px solid #dbeafe !important;
 
-    background: #f9fbff !important;
+    background:
+    #f9fbff !important;
 }
 
 /* =========================================================
@@ -194,7 +199,7 @@ BUTTONS
     transform: translateY(-2px);
 
     box-shadow:
-    0 8px 20px rgba(37,99,235,0.25);
+    0 8px 18px rgba(37,99,235,0.25);
 }
 
 /* =========================================================
@@ -228,15 +233,15 @@ METRIC CARDS
 
     border-radius: 20px;
 
-    padding: 22px;
+    padding: 24px;
 
     text-align: center;
 
-    box-shadow:
-    0 8px 24px rgba(0,0,0,0.05);
-
     border:
-    1px solid rgba(0,0,0,0.04);
+    1px solid #e5e7eb;
+
+    box-shadow:
+    0 6px 18px rgba(0,0,0,0.04);
 
     transition: 0.3s ease;
 }
@@ -255,6 +260,9 @@ DATAFRAME
     border-radius: 18px;
 
     overflow: hidden;
+
+    border:
+    1px solid #e5e7eb;
 }
 
 /* =========================================================
@@ -283,26 +291,27 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 # =========================================================
-# HERO
+# HERO FUNCTION
 # =========================================================
 
 def hero():
 
-    st.markdown("""
+    st.markdown(
+        """
+        <div class="hero">
 
-    <div class="hero">
+            <div class="hero-title">
+                🧬 EVOASTRA AI
+            </div>
 
-        <h1>
-        🧬 EVOASTRA AI
-        </h1>
+            <div class="hero-subtitle">
+                Clinical Trial Intelligence Platform
+            </div>
 
-        <p>
-        Clinical Trial Intelligence Platform
-        </p>
-
-    </div>
-
-    """, unsafe_allow_html=True)
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # =========================================================
 # LOGIN PAGE
@@ -323,20 +332,26 @@ def login_page():
         type="password"
     )
 
-    login_btn = st.button("🚀 Access Dashboard")
+    login_btn = st.button(
+        "🚀 Access Dashboard"
+    )
 
     if login_btn:
 
         if username.strip() == "" or password.strip() == "":
 
-            st.warning("Please enter username and password")
+            st.warning(
+                "Please enter username and password"
+            )
 
         else:
 
             st.session_state.logged_in = True
             st.session_state.username = username
 
-            st.success("Login Successful ✅")
+            st.success(
+                "Login Successful ✅"
+            )
 
             st.rerun()
 
@@ -387,7 +402,7 @@ with st.sidebar:
         st.rerun()
 
 # =========================================================
-# HERO SECTION
+# HERO
 # =========================================================
 
 hero()
@@ -408,7 +423,7 @@ def load_model():
 model = load_model()
 
 # =========================================================
-# FETCH CLINICAL TRIALS
+# FETCH TRIALS
 # =========================================================
 
 @st.cache_data
@@ -511,7 +526,7 @@ def fetch_trials(search_term):
     return clean_df
 
 # =========================================================
-# AI ASSISTANT
+# AI RESPONSE
 # =========================================================
 
 def ai_response(question):
@@ -540,17 +555,17 @@ def ai_response(question):
 
     elif "faiss" in q:
 
-        return "FAISS is a vector similarity search library for AI retrieval systems."
+        return "FAISS enables semantic vector similarity search."
 
     else:
 
-        return "I can help with healthcare AI, diseases, clinical trials, and biomedical NLP."
+        return "I can help with healthcare AI, clinical trials, biomedical NLP, and diseases."
 
 # =========================================================
 # MAIN DASHBOARD
 # =========================================================
 
-col1, col2 = st.columns([1,1])
+col1, col2 = st.columns(2)
 
 # =========================================================
 # LEFT PANEL
@@ -643,7 +658,7 @@ with col2:
     st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================================================
-# MATCHING LOGIC
+# TRIAL MATCHING
 # =========================================================
 
 if find_trials:
@@ -725,9 +740,15 @@ if find_trials:
                 "Top Matching Trials Retrieved ✅"
             )
 
+            # =========================================================
+            # TABLE
+            # =========================================================
+
             st.markdown('<div class="card">', unsafe_allow_html=True)
 
-            st.subheader("🎯 Top Trial Matches")
+            st.subheader(
+                "🎯 Top Trial Matches"
+            )
 
             st.dataframe(
                 top_trials[
@@ -749,7 +770,7 @@ if find_trials:
             st.markdown('<div class="card">', unsafe_allow_html=True)
 
             st.subheader(
-                "📈 Similarity Score Analysis"
+                "📈 Similarity Analysis"
             )
 
             fig, ax = plt.subplots(
@@ -759,16 +780,6 @@ if find_trials:
             ax.bar(
                 top_trials["NCTId"],
                 top_trials["Similarity"]
-            )
-
-            ax.set_xlabel("Trial ID")
-
-            ax.set_ylabel(
-                "Similarity Score"
-            )
-
-            ax.set_title(
-                "Top Trial Similarity Scores"
             )
 
             ax.spines['top'].set_visible(False)
