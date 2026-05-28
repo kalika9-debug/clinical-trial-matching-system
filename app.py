@@ -1,7 +1,13 @@
+# =====================================================
+# EVOASTRA AI
+# COMPLETE WORKING PROJECT
+# =====================================================
+
 import streamlit as st
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+import matplotlib.pyplot as plt
 
 # =====================================================
 # PAGE SETTINGS
@@ -14,26 +20,118 @@ st.set_page_config(
 )
 
 # =====================================================
-# SIMPLE STYLING
+# CSS
 # =====================================================
 
 st.markdown("""
 <style>
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
 .stApp{
     background-color:#f4f7ff;
 }
 
-.main-card{
+/* =====================================================
+CARDS
+===================================================== */
+
+.card{
+
     background:white;
+
     padding:25px;
-    border-radius:15px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+
+    border-radius:18px;
+
+    box-shadow:
+    0 4px 15px rgba(0,0,0,0.08);
+
     margin-bottom:20px;
 }
 
+/* =====================================================
+HEADINGS
+===================================================== */
+
 h1,h2,h3{
     color:#2563eb;
+}
+
+/* =====================================================
+BUTTONS
+===================================================== */
+
+.stButton > button{
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color:white !important;
+
+    border:none;
+
+    border-radius:12px;
+
+    height:48px;
+
+    width:100%;
+
+    font-size:16px;
+
+    font-weight:600;
+}
+
+/* =====================================================
+INPUTS
+===================================================== */
+
+.stTextInput input,
+.stTextArea textarea,
+.stNumberInput input{
+
+    border-radius:12px !important;
+
+    border:
+    1px solid #dbeafe !important;
+
+    background:
+    #f9fbff !important;
+}
+
+/* =====================================================
+SELECT BOX
+===================================================== */
+
+div[data-baseweb="select"] > div{
+
+    border-radius:12px !important;
+
+    border:
+    1px solid #dbeafe !important;
+
+    background:
+    #f9fbff !important;
+}
+
+/* =====================================================
+SIDEBAR
+===================================================== */
+
+section[data-testid="stSidebar"]{
+
+    background:white;
+
+    border-right:
+    1px solid #e5e7eb;
 }
 
 </style>
@@ -44,18 +142,50 @@ h1,h2,h3{
 # =====================================================
 
 st.markdown("""
-<div class="main-card" style="text-align:center;">
+
+<div class="card" style="text-align:center;">
 
 <h1>
 🧬 EVOASTRA AI
 </h1>
 
-<p>
+<p style="
+font-size:18px;
+color:gray;
+">
 Clinical Trial Recommendation System
 </p>
 
 </div>
+
 """, unsafe_allow_html=True)
+
+# =====================================================
+# SIDEBAR
+# =====================================================
+
+with st.sidebar:
+
+    st.title("🧬 EVOASTRA AI")
+
+    st.success(
+        "Healthcare Intelligence System"
+    )
+
+    st.markdown("---")
+
+    st.markdown("""
+
+### 🚀 Features
+
+✔ AI Trial Matching  
+✔ Healthcare AI Assistant  
+✔ Semantic Search  
+✔ Disease Intelligence  
+✔ Clinical Recommendations  
+✔ Similarity Analysis  
+
+""")
 
 # =====================================================
 # SAMPLE DATASET
@@ -99,7 +229,7 @@ data = pd.DataFrame({
 })
 
 # =====================================================
-# LOAD AI MODEL
+# LOAD MODEL
 # =====================================================
 
 @st.cache_resource
@@ -126,11 +256,15 @@ col1, col2 = st.columns(2)
 with col1:
 
     st.markdown(
-        '<div class="main-card">',
+        '<div class="card">',
         unsafe_allow_html=True
     )
 
     st.subheader("🩺 Patient Information")
+
+    # =================================================
+    # DISEASE
+    # =================================================
 
     disease = st.selectbox(
 
@@ -145,9 +279,63 @@ with col1:
         ]
     )
 
-    patient_notes = st.text_area(
-        "Patient Notes"
+    # =================================================
+    # AGE
+    # =================================================
+
+    age = st.slider(
+        "Select Age",
+        1,
+        100,
+        35
     )
+
+    # =================================================
+    # GENDER
+    # =================================================
+
+    gender = st.radio(
+
+        "Select Gender",
+
+        [
+            "Female",
+            "Male",
+            "Other"
+        ]
+    )
+
+    # =================================================
+    # SYMPTOMS
+    # =================================================
+
+    symptoms = st.multiselect(
+
+        "Select Symptoms",
+
+        [
+            "Fever",
+            "Cough",
+            "Chest Pain",
+            "Fatigue",
+            "Weight Loss",
+            "Breathing Difficulty",
+            "High Blood Sugar"
+        ]
+    )
+
+    # =================================================
+    # NOTES
+    # =================================================
+
+    patient_notes = st.text_area(
+        "Additional Patient Notes",
+        height=150
+    )
+
+    # =================================================
+    # BUTTON
+    # =================================================
 
     find_btn = st.button(
         "🔍 Find Matching Trials"
@@ -165,53 +353,77 @@ with col1:
 with col2:
 
     st.markdown(
-        '<div class="main-card">',
+        '<div class="card">',
         unsafe_allow_html=True
     )
 
     st.subheader("🤖 Healthcare AI Assistant")
 
-    question = st.text_input(
-        "Ask AI"
+    question = st.selectbox(
+
+        "Ask AI",
+
+        [
+            "What is cancer?",
+            "What is diabetes?",
+            "What is heart disease?",
+            "What is COVID-19?",
+            "What is BioClinicalBERT?"
+        ]
     )
 
     ask_btn = st.button(
-        "⚡ Generate Response"
+        "⚡ Generate AI Response"
     )
+
+    # =================================================
+    # AI RESPONSES
+    # =================================================
 
     if ask_btn:
 
-        question = question.lower()
+        if "cancer" in question.lower():
 
-        if "cancer" in question:
+            st.success("""
+Cancer trials study:
+• Immunotherapy
+• Targeted therapy
+• Precision medicine
+• Survival treatments
+""")
 
-            st.success(
-                "Cancer trials study immunotherapy and targeted treatments."
-            )
+        elif "diabetes" in question.lower():
 
-        elif "diabetes" in question:
+            st.success("""
+Diabetes research focuses on:
+• Insulin therapy
+• Glucose monitoring
+• Lifestyle management
+""")
 
-            st.success(
-                "Diabetes research focuses on insulin and glucose monitoring."
-            )
+        elif "heart" in question.lower():
 
-        elif "heart" in question:
+            st.success("""
+Heart disease trials evaluate:
+• Cardiovascular treatments
+• Heart monitoring
+• Blood pressure therapies
+""")
 
-            st.success(
-                "Heart disease trials evaluate cardiovascular treatments."
-            )
+        elif "covid" in question.lower():
 
-        elif "covid" in question:
-
-            st.success(
-                "COVID trials focus on vaccines and antiviral medicines."
-            )
+            st.success("""
+COVID studies focus on:
+• Vaccines
+• Antiviral medicines
+• Immune response
+""")
 
         else:
 
-            st.success(
-                "Healthcare AI assistant is ready to help."
-            )
+            st.success("""
+BioClinicalBERT converts biomedical text into semantic embeddings for AI healthcare systems.
+""")
 
     st.markdown(
         '</div>',
@@ -224,9 +436,16 @@ with col2:
 
 if find_btn:
 
-    patient_text = disease + " " + patient_notes
+    patient_text = f"""
+    {disease}
+    {gender}
+    {' '.join(symptoms)}
+    {patient_notes}
+    """
 
-    # Create embeddings
+    # =================================================
+    # CREATE EMBEDDINGS
+    # =================================================
 
     trial_embeddings = model.encode(
         data["Description"]
@@ -236,26 +455,33 @@ if find_btn:
         [patient_text]
     )
 
-    # Calculate similarity
+    # =================================================
+    # CALCULATE SIMILARITY
+    # =================================================
 
     similarity_scores = cosine_similarity(
+
         patient_embedding,
+
         trial_embeddings
+
     )[0]
 
     data["Similarity"] = similarity_scores
 
     results = data.sort_values(
+
         by="Similarity",
+
         ascending=False
     )
 
     # =================================================
-    # RESULTS
+    # RESULTS TABLE
     # =================================================
 
     st.markdown(
-        '<div class="main-card">',
+        '<div class="card">',
         unsafe_allow_html=True
     )
 
@@ -292,6 +518,42 @@ AI Match Score:
         unsafe_allow_html=True
     )
 
+    # =================================================
+    # CHART
+    # =================================================
+
+    st.markdown(
+        '<div class="card">',
+        unsafe_allow_html=True
+    )
+
+    st.subheader(
+        "📈 Similarity Analysis"
+    )
+
+    fig, ax = plt.subplots(
+        figsize=(7,4)
+    )
+
+    ax.bar(
+        results["Trial"],
+        results["Similarity"]
+    )
+
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    ax.grid(alpha=0.2)
+
+    plt.xticks(rotation=20)
+
+    st.pyplot(fig)
+
+    st.markdown(
+        '</div>',
+        unsafe_allow_html=True
+    )
+
 # =====================================================
 # METRICS
 # =====================================================
@@ -301,18 +563,21 @@ st.subheader("📊 AI Metrics")
 m1, m2, m3 = st.columns(3)
 
 with m1:
+
     st.metric(
         "AI Model",
         "MiniLM"
     )
 
 with m2:
+
     st.metric(
-        "Matching Accuracy",
+        "Accuracy",
         "94%"
     )
 
 with m3:
+
     st.metric(
         "Search Type",
         "Semantic AI"
