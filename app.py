@@ -1,12 +1,13 @@
 # =====================================================
-# QUICK CLINICAL TRIAL MATCH
-# SHORT & FAST VERSION
+# CLINICAL TRIAL MATCH
+# CLEAN FINAL VERSION
 # =====================================================
 
 import streamlit as st
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+import matplotlib.pyplot as plt
 
 # =====================================================
 # PAGE SETTINGS
@@ -15,53 +16,164 @@ from sklearn.metrics.pairwise import cosine_similarity
 st.set_page_config(
     page_title="Clinical Trial Match",
     page_icon="🩺",
-    layout="centered"
+    layout="wide"
 )
 
 # =====================================================
-# SIMPLE CSS
+# CUSTOM CSS
 # =====================================================
 
 st.markdown("""
 <style>
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
 .stApp{
     background-color:#f4f7ff;
 }
 
+/* =====================================================
+HEADINGS
+===================================================== */
+
 h1,h2,h3{
-    color:#2563eb;
+    color:#1e293b;
 }
 
+/* =====================================================
+BUTTONS
+===================================================== */
+
 .stButton > button{
-    background:#2563eb;
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
     color:white !important;
+
     border:none;
-    border-radius:10px;
-    height:45px;
+
+    border-radius:12px;
+
+    height:48px;
+
     width:100%;
+
     font-size:16px;
+
     font-weight:600;
+}
+
+/* =====================================================
+INPUTS
+===================================================== */
+
+.stTextInput input,
+.stTextArea textarea,
+.stNumberInput input{
+
+    border-radius:12px !important;
+
+    border:
+    1px solid #dbeafe !important;
+
+    background:
+    #ffffff !important;
+}
+
+/* =====================================================
+SELECT BOX
+===================================================== */
+
+div[data-baseweb="select"] > div{
+
+    border-radius:12px !important;
+
+    border:
+    1px solid #dbeafe !important;
+
+    background:
+    #ffffff !important;
+}
+
+/* =====================================================
+SIDEBAR
+===================================================== */
+
+section[data-testid="stSidebar"]{
+
+    background:white;
+
+    border-right:
+    1px solid #e5e7eb;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 # =====================================================
-# TITLE
+# HERO SECTION
 # =====================================================
 
 st.markdown("""
 
-<h1 style='text-align:center;'>
+<div style="
+background:white;
+padding:35px;
+border-radius:20px;
+text-align:center;
+margin-bottom:25px;
+box-shadow:0 4px 15px rgba(0,0,0,0.06);
+">
+
+<h1>
 🩺 Clinical Trial Match
 </h1>
 
-<p style='text-align:center;color:gray;'>
-Quick Patient Trial Recommendation System
+<p style="
+font-size:18px;
+color:gray;
+">
+AI-Based Patient Trial Recommendation System
 </p>
 
+</div>
+
 """, unsafe_allow_html=True)
+
+# =====================================================
+# SIDEBAR
+# =====================================================
+
+with st.sidebar:
+
+    st.title("🩺 Clinical Trial Match")
+
+    st.success(
+        "Healthcare Recommendation System"
+    )
+
+    st.markdown("---")
+
+    st.markdown("""
+
+### Features
+
+✔ Trial Recommendation  
+✔ Semantic Search  
+✔ Disease Insights  
+✔ Patient Analysis  
+✔ Similarity Matching  
+
+""")
 
 # =====================================================
 # DATASET
@@ -76,6 +188,16 @@ data = pd.DataFrame({
         "Heart Disease Monitoring",
         "COVID Vaccine Trial",
         "Lung Cancer Precision Medicine"
+
+    ],
+
+    "Condition": [
+
+        "breast cancer",
+        "diabetes",
+        "heart disease",
+        "covid-19",
+        "lung cancer"
 
     ],
 
@@ -108,121 +230,239 @@ def load_model():
 model = load_model()
 
 # =====================================================
-# QUICK FORM
+# MAIN LAYOUT
 # =====================================================
 
-st.subheader("Patient Details")
-
-disease = st.selectbox(
-
-    "Disease",
-
-    [
-        "breast cancer",
-        "diabetes",
-        "heart disease",
-        "covid-19",
-        "lung cancer"
-    ]
-)
-
-symptom = st.selectbox(
-
-    "Main Symptom",
-
-    [
-        "Fever",
-        "Cough",
-        "Chest Pain",
-        "Fatigue",
-        "Weight Loss"
-    ]
-)
-
-duration = st.selectbox(
-
-    "Duration",
-
-    [
-        "1 week",
-        "1 month",
-        "3 months",
-        "More than 3 months"
-    ]
-)
+col1, col2 = st.columns(2)
 
 # =====================================================
-# BUTTON
+# LEFT SIDE
 # =====================================================
 
-find_btn = st.button(
-    "Find Trial Match"
-)
+with col1:
+
+    st.subheader("Patient Information")
+
+    disease = st.selectbox(
+
+        "Select Disease",
+
+        [
+            "breast cancer",
+            "diabetes",
+            "heart disease",
+            "covid-19",
+            "lung cancer"
+        ]
+    )
+
+    age = st.slider(
+        "Select Age",
+        1,
+        100,
+        35
+    )
+
+    gender = st.radio(
+
+        "Select Gender",
+
+        [
+            "Female",
+            "Male",
+            "Other"
+        ]
+    )
+
+    symptoms = st.multiselect(
+
+        "Select Symptoms",
+
+        [
+            "Fever",
+            "Cough",
+            "Chest Pain",
+            "Fatigue",
+            "Weight Loss",
+            "Breathing Difficulty",
+            "High Blood Sugar"
+        ]
+    )
+
+    patient_notes = st.text_area(
+        "Additional Notes",
+        height=150
+    )
+
+    find_btn = st.button(
+        "Find Matching Trials"
+    )
 
 # =====================================================
-# MATCHING
+# RIGHT SIDE
+# =====================================================
+
+with col2:
+
+    st.subheader("Clinical Information")
+
+    question = st.selectbox(
+
+        "Choose Topic",
+
+        [
+            "Cancer Information",
+            "Diabetes Information",
+            "Heart Disease Information",
+            "COVID-19 Information"
+        ]
+    )
+
+    ask_btn = st.button(
+        "Generate Information"
+    )
+
+    if ask_btn:
+
+        if "Cancer" in question:
+
+            st.info("""
+
+### Cancer Information
+
+• Immunotherapy  
+• Precision medicine  
+• Chemotherapy  
+• Radiation therapy  
+• Clinical monitoring  
+
+""")
+
+        elif "Diabetes" in question:
+
+            st.info("""
+
+### Diabetes Information
+
+• Insulin therapy  
+• Glucose monitoring  
+• Diet management  
+• Lifestyle improvement  
+
+""")
+
+        elif "Heart" in question:
+
+            st.info("""
+
+### Heart Disease Information
+
+• Blood pressure control  
+• Cardiovascular monitoring  
+• Lifestyle interventions  
+
+""")
+
+        else:
+
+            st.info("""
+
+### COVID-19 Information
+
+• Vaccine effectiveness  
+• Antiviral medicines  
+• Immune response studies  
+
+""")
+
+# =====================================================
+# MATCHING SYSTEM
 # =====================================================
 
 if find_btn:
 
     patient_text = f"""
     {disease}
-    {symptom}
-    {duration}
+    {gender}
+    {' '.join(symptoms)}
+    {patient_notes}
     """
-
-    # Embeddings
 
     trial_embeddings = model.encode(
         data["Description"].tolist()
     )
 
     patient_embedding = model.encode(
-        [patient_text]
+        [str(patient_text)]
     )
 
-    # Similarity
+    similarity_scores = cosine_similarity(
 
-    scores = cosine_similarity(
         patient_embedding,
+
         trial_embeddings
+
     )[0]
 
-    data["Similarity"] = scores
+    data["Similarity"] = similarity_scores
 
     results = data.sort_values(
+
         by="Similarity",
+
         ascending=False
     )
 
-    # =================================================
-    # BEST MATCH
-    # =================================================
-
-    best = results.iloc[0]
-
-    st.success(f"""
-
-✅ Best Matching Trial
-
-Trial:
-{best['Trial']}
-
-Match Score:
-{round(best['Similarity'] * 100, 2)}%
-
-""")
-
-    # =================================================
-    # TABLE
-    # =================================================
-
-    st.subheader("Top Matches")
+    st.subheader(
+        "Recommended Clinical Trials"
+    )
 
     st.dataframe(
         results,
         use_container_width=True
     )
+
+    best_trial = results.iloc[0]
+
+    st.success(f"""
+
+Best Match:
+{best_trial['Trial']}
+
+Condition:
+{best_trial['Condition']}
+
+Similarity Score:
+{round(best_trial['Similarity'] * 100, 2)}%
+
+""")
+
+    # =================================================
+    # CHART
+    # =================================================
+
+    st.subheader(
+        "Similarity Analysis"
+    )
+
+    fig, ax = plt.subplots(
+        figsize=(7,4)
+    )
+
+    ax.bar(
+        results["Trial"],
+        results["Similarity"]
+    )
+
+    ax.spines['top'].set_visible(False)
+
+    ax.spines['right'].set_visible(False)
+
+    ax.grid(alpha=0.2)
+
+    plt.xticks(rotation=20)
+
+    st.pyplot(fig)
 
 # =====================================================
 # FOOTER
@@ -230,12 +470,14 @@ Match Score:
 
 st.markdown("""
 
-<hr>
+<div style="
+text-align:center;
+margin-top:40px;
+color:gray;
+">
 
-<p style='text-align:center;color:gray;'>
+Clinical Trial Match • Healthcare Recommendation Platform
 
-Clinical Trial Match System
-
-</p>
+</div>
 
 """, unsafe_allow_html=True)
