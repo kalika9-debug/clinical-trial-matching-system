@@ -1,6 +1,6 @@
 # =====================================================
 # CLINICAL TRIAL MATCH
-# CLEAN FINAL VERSION
+# COMPLETE FINAL WORKING PROJECT
 # =====================================================
 
 import streamlit as st
@@ -243,6 +243,10 @@ with col1:
 
     st.subheader("Patient Information")
 
+    # =================================================
+    # DISEASE
+    # =================================================
+
     disease = st.selectbox(
 
         "Select Disease",
@@ -256,12 +260,20 @@ with col1:
         ]
     )
 
+    # =================================================
+    # AGE
+    # =================================================
+
     age = st.slider(
         "Select Age",
         1,
         100,
         35
     )
+
+    # =================================================
+    # GENDER
+    # =================================================
 
     gender = st.radio(
 
@@ -274,25 +286,79 @@ with col1:
         ]
     )
 
-    symptoms = st.multiselect(
+    # =================================================
+    # DETAILED SYMPTOMS
+    # =================================================
 
-        "Select Symptoms",
+    st.subheader("Patient Symptoms")
 
+    fever = st.radio(
+        "Do you have fever?",
+        ["No", "Mild", "Moderate", "Severe"]
+    )
+
+    cough = st.radio(
+        "Do you have cough?",
+        ["No", "Mild", "Moderate", "Severe"]
+    )
+
+    fatigue = st.radio(
+        "Fatigue Level",
+        ["None", "Low", "Medium", "High"]
+    )
+
+    pain = st.radio(
+        "Chest Pain",
+        ["No", "Sometimes", "Frequent"]
+    )
+
+    breathing = st.radio(
+        "Breathing Difficulty",
+        ["No", "Mild", "Moderate", "Severe"]
+    )
+
+    weight_loss = st.radio(
+        "Unexpected Weight Loss",
+        ["No", "Yes"]
+    )
+
+    blood_sugar = st.radio(
+        "High Blood Sugar",
+        ["No", "Yes"]
+    )
+
+    smoking = st.radio(
+        "Smoking History",
+        ["No", "Occasional", "Regular"]
+    )
+
+    bp = st.radio(
+        "Blood Pressure Issues",
+        ["No", "Low", "High"]
+    )
+
+    symptom_duration = st.selectbox(
+        "Symptoms Duration",
         [
-            "Fever",
-            "Cough",
-            "Chest Pain",
-            "Fatigue",
-            "Weight Loss",
-            "Breathing Difficulty",
-            "High Blood Sugar"
+            "Less than 1 week",
+            "1-4 weeks",
+            "1-3 months",
+            "More than 3 months"
         ]
     )
+
+    # =================================================
+    # NOTES
+    # =================================================
 
     patient_notes = st.text_area(
         "Additional Notes",
         height=150
     )
+
+    # =================================================
+    # BUTTON
+    # =================================================
 
     find_btn = st.button(
         "Find Matching Trials"
@@ -335,6 +401,7 @@ with col2:
 • Chemotherapy  
 • Radiation therapy  
 • Clinical monitoring  
+• Tumor targeting methods  
 
 """)
 
@@ -348,6 +415,7 @@ with col2:
 • Glucose monitoring  
 • Diet management  
 • Lifestyle improvement  
+• Blood sugar tracking  
 
 """)
 
@@ -360,6 +428,7 @@ with col2:
 • Blood pressure control  
 • Cardiovascular monitoring  
 • Lifestyle interventions  
+• AI-assisted diagnostics  
 
 """)
 
@@ -372,6 +441,7 @@ with col2:
 • Vaccine effectiveness  
 • Antiviral medicines  
 • Immune response studies  
+• Respiratory treatment research  
 
 """)
 
@@ -382,11 +452,41 @@ with col2:
 if find_btn:
 
     patient_text = f"""
-    {disease}
-    {gender}
-    {' '.join(symptoms)}
+
+    Disease: {disease}
+
+    Age: {age}
+
+    Gender: {gender}
+
+    Fever: {fever}
+
+    Cough: {cough}
+
+    Fatigue: {fatigue}
+
+    Chest Pain: {pain}
+
+    Breathing Difficulty: {breathing}
+
+    Weight Loss: {weight_loss}
+
+    Blood Sugar: {blood_sugar}
+
+    Smoking History: {smoking}
+
+    Blood Pressure: {bp}
+
+    Duration: {symptom_duration}
+
+    Notes:
     {patient_notes}
+
     """
+
+    # =================================================
+    # EMBEDDINGS
+    # =================================================
 
     trial_embeddings = model.encode(
         data["Description"].tolist()
@@ -395,6 +495,10 @@ if find_btn:
     patient_embedding = model.encode(
         [str(patient_text)]
     )
+
+    # =================================================
+    # SIMILARITY
+    # =================================================
 
     similarity_scores = cosine_similarity(
 
@@ -413,6 +517,10 @@ if find_btn:
         ascending=False
     )
 
+    # =================================================
+    # RESULTS
+    # =================================================
+
     st.subheader(
         "Recommended Clinical Trials"
     )
@@ -421,6 +529,10 @@ if find_btn:
         results,
         use_container_width=True
     )
+
+    # =================================================
+    # BEST MATCH
+    # =================================================
 
     best_trial = results.iloc[0]
 
