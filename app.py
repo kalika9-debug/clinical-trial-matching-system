@@ -1,5 +1,7 @@
 # =========================================================
-# EVOASTRA CLINICAL TRIAL AI
+# EVOASTRA AI
+# PROFESSIONAL HEALTHCARE AI DASHBOARD
+# FULL WORKING VERSION
 # =========================================================
 
 import streamlit as st
@@ -9,15 +11,17 @@ import numpy as np
 import faiss
 from sentence_transformers import SentenceTransformer
 import matplotlib.pyplot as plt
+from transformers import pipeline
 
 # =========================================================
 # PAGE CONFIG
 # =========================================================
 
 st.set_page_config(
-    page_title="EVOASTRA Clinical Trial AI",
-    page_icon="🩺",
-    layout="wide"
+    page_title="EVOASTRA AI",
+    page_icon="🧬",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 # =========================================================
@@ -27,217 +31,252 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-html, body {
-    font-family: 'Times New Roman', serif;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
 }
+
+/* =========================================================
+BACKGROUND
+========================================================= */
 
 .stApp {
-    background: linear-gradient(to right, #fff5f5, #ffeaea);
+
+    background:
+    linear-gradient(
+        135deg,
+        #f4f7ff,
+        #eef4ff
+    );
+
+    color: #111827;
 }
 
-/* INPUTS */
+/* =========================================================
+HERO SECTION
+========================================================= */
+
+.hero {
+
+    background: white;
+
+    border-radius: 24px;
+
+    padding: 55px 40px;
+
+    text-align: center;
+
+    border:
+    1px solid #e5e7eb;
+
+    box-shadow:
+    0 8px 24px rgba(0,0,0,0.05);
+
+    margin-bottom: 30px;
+}
+
+.hero-title {
+
+    font-size: 52px;
+
+    font-weight: 700;
+
+    color: #2563eb;
+
+    margin-bottom: 12px;
+}
+
+.hero-subtitle {
+
+    font-size: 18px;
+
+    color: #6b7280;
+}
+
+/* =========================================================
+CARDS
+========================================================= */
+
+.card {
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 28px;
+
+    margin-bottom: 24px;
+
+    border:
+    1px solid #e5e7eb;
+
+    box-shadow:
+    0 6px 20px rgba(0,0,0,0.04);
+}
+
+/* =========================================================
+INPUTS
+========================================================= */
 
 .stTextInput input,
 .stTextArea textarea,
 .stNumberInput input {
 
-    background-color: white !important;
-    color: black !important;
-    border: 2px solid #b30000 !important;
-    border-radius: 10px !important;
+    border-radius: 12px !important;
+
+    border:
+    1px solid #dbeafe !important;
+
+    padding: 12px !important;
+
+    background:
+    #f9fbff !important;
+
+    color:
+    #111827 !important;
 }
 
-/* SELECT BOX */
+/* =========================================================
+SELECT BOX
+========================================================= */
 
 div[data-baseweb="select"] > div {
-    background-color: white !important;
-    border: 2px solid #b30000 !important;
-    border-radius: 10px !important;
+
+    border-radius: 12px !important;
+
+    border:
+    1px solid #dbeafe !important;
+
+    background:
+    #f9fbff !important;
 }
 
-/* BUTTONS */
+/* =========================================================
+BUTTONS
+========================================================= */
 
 .stButton > button {
 
-    background: linear-gradient(to right, #7b0000, #b30000);
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
     color: white !important;
+
     border: none;
+
     border-radius: 12px;
+
     height: 50px;
-    width: 100%;
-    font-size: 18px;
-    font-weight: bold;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    transition: 0.3s ease;
 }
 
 .stButton > button:hover {
 
-    background: linear-gradient(to right, #5c0000, #8B0000);
-    color: white !important;
+    transform: translateY(-2px);
+
+    box-shadow:
+    0 8px 18px rgba(37,99,235,0.25);
 }
 
-/* HEADINGS */
-
-h1, h2, h3 {
-    color: #5c0000 !important;
-}
-
-/* SIDEBAR */
+/* =========================================================
+SIDEBAR
+========================================================= */
 
 section[data-testid="stSidebar"] {
-    background-color: #f7f7f7;
+
+    background: white;
+
+    border-right:
+    1px solid #e5e7eb;
 }
 
-/* FOOTER */
+/* =========================================================
+HEADINGS
+========================================================= */
+
+h1,h2,h3,h4,h5 {
+
+    color: #111827 !important;
+}
+
+/* =========================================================
+METRIC CARDS
+========================================================= */
+
+.metric-card {
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 24px;
+
+    text-align: center;
+
+    border:
+    1px solid #e5e7eb;
+
+    box-shadow:
+    0 6px 18px rgba(0,0,0,0.04);
+}
+
+/* =========================================================
+FOOTER
+========================================================= */
 
 .footer {
+
     text-align: center;
-    color: #7b0000;
+
+    color: #6b7280;
+
     margin-top: 40px;
-    font-weight: bold;
+
+    font-size: 14px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 # =========================================================
-# SESSION STATE
-# =========================================================
-
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-# =========================================================
-# HERO SECTION
+# HERO
 # =========================================================
 
 def hero():
 
-    st.markdown("""
-    <div style="
-        background: linear-gradient(135deg,#7b0000,#b30000);
-        padding:40px;
-        border-radius:25px;
-        text-align:center;
-        color:white;
-        margin-bottom:30px;
-    ">
+    st.markdown(
+        """
+        <div class="hero">
 
-        <h1 style="color:white;">
-            🩺 EVOASTRA CLINICAL TRIAL AI
-        </h1>
+            <div class="hero-title">
+                🧬 EVOASTRA AI
+            </div>
 
-        <h4 style="color:#ffeaea;">
-            AI-Powered Biomedical Retrieval &
-            Clinical Trial Recommendation System
-        </h4>
+            <div class="hero-subtitle">
+                Clinical Trial Intelligence Platform
+            </div>
 
-    </div>
-    """, unsafe_allow_html=True)
-
-# =========================================================
-# LOGIN PAGE
-# =========================================================
-
-def login_page():
-
-    hero()
-
-    st.subheader("❤️ Why Healthcare Matters")
-
-    st.write("""
-Healthcare helps improve quality of life,
-supports early disease detection,
-and improves medical research.
-
-Artificial Intelligence in healthcare can:
-- Improve diagnosis
-- Match patients to clinical trials
-- Support doctors
-- Improve treatment planning
-""")
-
-    st.markdown("---")
-
-    st.subheader("🔐 Login")
-
-    username = st.text_input("👤 Username")
-
-    password = st.text_input(
-        "🔑 Password",
-        type="password"
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
-    login_btn = st.button("🚀 Login")
-
-    if login_btn:
-
-        if username.strip() == "" or password.strip() == "":
-
-            st.warning(
-                "Please enter username and password"
-            )
-
-        else:
-
-            st.session_state.logged_in = True
-            st.session_state.username = username
-
-            st.success("Login Successful ✅")
-
-            st.rerun()
-
 # =========================================================
-# LOGIN CHECK
-# =========================================================
-
-if not st.session_state.logged_in:
-
-    login_page()
-    st.stop()
-
-# =========================================================
-# SIDEBAR
-# =========================================================
-
-with st.sidebar:
-
-    st.success(
-        f"👋 Welcome {st.session_state.username}"
-    )
-
-    st.markdown("---")
-
-    st.subheader("🚀 Features")
-
-    st.write("""
-✔ AI Trial Matching  
-✔ BioClinicalBERT  
-✔ FAISS Semantic Search  
-✔ Biomedical NLP  
-✔ Clinical Trial Retrieval  
-""")
-
-    st.markdown("---")
-
-    logout = st.button("🚪 Logout")
-
-    if logout:
-
-        st.session_state.logged_in = False
-        st.rerun()
-
-# =========================================================
-# HERO
-# =========================================================
-
-hero()
-
-# =========================================================
-# LOAD MODEL
+# LOAD MODELS
 # =========================================================
 
 @st.cache_resource
-def load_model():
+def load_embedding_model():
 
     model = SentenceTransformer(
         "emilyalsentzer/Bio_ClinicalBERT"
@@ -245,7 +284,18 @@ def load_model():
 
     return model
 
-model = load_model()
+@st.cache_resource
+def load_ai_chatbot():
+
+    chatbot = pipeline(
+        "text-generation",
+        model="distilgpt2"
+    )
+
+    return chatbot
+
+embedding_model = load_embedding_model()
+chatbot = load_ai_chatbot()
 
 # =========================================================
 # FETCH CLINICAL TRIALS
@@ -258,7 +308,7 @@ def fetch_trials(search_term):
 
     params = {
         "query.term": search_term,
-        "pageSize": 100,
+        "pageSize": 50,
         "format": "json"
     }
 
@@ -284,23 +334,19 @@ def fetch_trials(search_term):
         try:
 
             protocol = study.get(
-                "protocolSection",
-                {}
+                "protocolSection", {}
             )
 
             identification = protocol.get(
-                "identificationModule",
-                {}
+                "identificationModule", {}
             )
 
             conditions = protocol.get(
-                "conditionsModule",
-                {}
+                "conditionsModule", {}
             )
 
             eligibility = protocol.get(
-                "eligibilityModule",
-                {}
+                "eligibilityModule", {}
             )
 
             rows.append({
@@ -339,9 +385,11 @@ def fetch_trials(search_term):
 
     clean_df["text"] = (
 
-        clean_df["BriefTitle"].astype(str) + " " +
+        clean_df["BriefTitle"].astype(str)
+        + " " +
 
-        clean_df["Condition"].astype(str) + " " +
+        clean_df["Condition"].astype(str)
+        + " " +
 
         clean_df["EligibilityCriteria"].astype(str)
     )
@@ -354,81 +402,64 @@ def fetch_trials(search_term):
 
 def ai_response(question):
 
-    q = question.lower()
+    prompt = f"""
+    You are a professional healthcare AI assistant.
 
-    if "cancer" in q:
+    Question:
+    {question}
 
-        return """
-Cancer clinical trials test new medicines,
-therapies, and treatments to improve survival.
-"""
+    Answer:
+    """
 
-    elif "diabetes" in q:
+    response = chatbot(
+        prompt,
+        max_length=120,
+        do_sample=True,
+        temperature=0.7
+    )
 
-        return """
-Diabetes trials focus on insulin treatment,
-glucose monitoring,
-and lifestyle management.
-"""
+    generated = response[0]["generated_text"]
 
-    elif "heart" in q:
+    answer = generated.split("Answer:")[-1]
 
-        return """
-Heart disease trials evaluate surgeries,
-medications,
-and cardiovascular therapies.
-"""
+    return answer.strip()
 
-    elif "covid" in q:
+# =========================================================
+# HERO
+# =========================================================
 
-        return """
-COVID-19 trials study vaccines,
-antiviral medicines,
-and long-term effects.
-"""
+hero()
 
-    elif "bert" in q:
+# =========================================================
+# SIDEBAR
+# =========================================================
 
-        return """
-BioClinicalBERT converts biomedical text
-into semantic vector embeddings.
-"""
+with st.sidebar:
 
-    elif "faiss" in q:
+    st.markdown("## 🧬 EVOASTRA AI")
 
-        return """
-FAISS is a vector database library
-used for fast similarity search.
-"""
+    st.success("AI Healthcare Dashboard")
 
-    elif "trial" in q:
+    st.markdown("---")
 
-        return """
-Clinical trials help researchers evaluate
-the safety and effectiveness of treatments.
-"""
+    st.markdown("""
 
-    elif "hello" in q or "hi" in q:
+### 🚀 Features
 
-        return "Hello 👋 Welcome to EVOASTRA AI"
+✔ AI Trial Matching  
+✔ Clinical Trial Retrieval  
+✔ Biomedical NLP  
+✔ AI Healthcare Assistant  
+✔ BioClinicalBERT  
+✔ FAISS Search  
 
-    else:
-
-        return """
-I can help with:
-• Clinical Trials
-• Diseases
-• Eligibility
-• BioClinicalBERT
-• FAISS
-• Healthcare AI
-"""
+""")
 
 # =========================================================
 # MAIN DASHBOARD
 # =========================================================
 
-col1, col2 = st.columns([1,1])
+col1, col2 = st.columns(2)
 
 # =========================================================
 # LEFT PANEL
@@ -436,7 +467,12 @@ col1, col2 = st.columns([1,1])
 
 with col1:
 
-    st.subheader("🧬 Patient Trial Matching")
+    st.markdown(
+        '<div class="card">',
+        unsafe_allow_html=True
+    )
+
+    st.subheader("🧬 AI Trial Matching")
 
     disease = st.selectbox(
         "Select Disease",
@@ -449,15 +485,11 @@ with col1:
         ]
     )
 
-    st.markdown("---")
-
-    st.subheader("🩺 Patient Information")
-
     age = st.number_input(
         "Age",
         min_value=1,
         max_value=100,
-        value=45
+        value=35
     )
 
     gender = st.selectbox(
@@ -478,12 +510,17 @@ with col1:
     )
 
     patient_query = st.text_area(
-        "Enter Patient Information",
+        "Patient Notes",
         height=180
     )
 
     find_trials = st.button(
         "🔍 Find Matching Trials"
+    )
+
+    st.markdown(
+        '</div>',
+        unsafe_allow_html=True
     )
 
 # =========================================================
@@ -492,25 +529,38 @@ with col1:
 
 with col2:
 
+    st.markdown(
+        '<div class="card">',
+        unsafe_allow_html=True
+    )
+
     st.subheader("🤖 EVOASTRA AI Assistant")
 
-    user_question = st.text_input(
-        "Ask Any Healthcare Question"
+    user_question = st.text_area(
+        "Ask Healthcare AI",
+        height=150
     )
 
     ask_ai = st.button(
-        "🤖 Ask AI"
+        "⚡ Generate AI Response"
     )
 
     if ask_ai:
 
-        response = ai_response(
-            user_question
-        )
+        with st.spinner(
+            "Generating AI response..."
+        ):
 
-        st.chat_message(
-            "assistant"
-        ).write(response)
+            response = ai_response(
+                user_question
+            )
+
+            st.success(response)
+
+    st.markdown(
+        '</div>',
+        unsafe_allow_html=True
+    )
 
 # =========================================================
 # MATCHING LOGIC
@@ -530,7 +580,7 @@ if find_trials:
         final_query = auto_query
 
     with st.spinner(
-        "🧠 AI analyzing biomedical profile..."
+        "Analyzing biomedical profile..."
     ):
 
         clean_df = fetch_trials(disease)
@@ -545,15 +595,7 @@ if find_trials:
 
             texts = clean_df["text"].tolist()
 
-            if len(texts) == 0:
-
-                st.error(
-                    "No trial text available."
-                )
-
-                st.stop()
-
-            embeddings = model.encode(
+            embeddings = embedding_model.encode(
                 texts,
                 show_progress_bar=False
             )
@@ -572,7 +614,7 @@ if find_trials:
 
             index.add(embeddings)
 
-            patient_embedding = model.encode(
+            patient_embedding = embedding_model.encode(
                 [str(final_query)],
                 show_progress_bar=False
             )
@@ -599,13 +641,10 @@ if find_trials:
                 4
             )
 
-            st.success(
-                "Top Matching Trials Retrieved ✅"
+            st.markdown(
+                '<div class="card">',
+                unsafe_allow_html=True
             )
-
-            # =========================================================
-            # TABLE
-            # =========================================================
 
             st.subheader(
                 "🎯 Top Trial Matches"
@@ -622,109 +661,22 @@ if find_trials:
                 use_container_width=True
             )
 
-            # =========================================================
-            # LINKS
-            # =========================================================
-
-            st.subheader(
-                "🔗 Clinical Trial Links"
+            st.markdown(
+                '</div>',
+                unsafe_allow_html=True
             )
-
-            for _, row in top_trials.iterrows():
-
-                st.markdown(
-                    f"🔹 [{row['BriefTitle']}](https://clinicaltrials.gov/study/{row['NCTId']})"
-                )
-
-            # =========================================================
-            # DISEASE INFO
-            # =========================================================
-
-            st.subheader(
-                "🩺 Disease Information"
-            )
-
-            disease_info = {
-
-                "breast cancer": {
-                    "about":
-                    "Breast cancer develops in breast tissue.",
-
-                    "precautions": [
-                        "Regular screening",
-                        "Exercise regularly",
-                        "Healthy diet",
-                        "Avoid smoking"
-                    ]
-                },
-
-                "lung cancer": {
-                    "about":
-                    "Lung cancer affects lung tissues.",
-
-                    "precautions": [
-                        "Avoid smoking",
-                        "Reduce pollution exposure",
-                        "Healthy lifestyle",
-                        "Regular checkups"
-                    ]
-                },
-
-                "diabetes": {
-                    "about":
-                    "Diabetes affects blood sugar regulation.",
-
-                    "precautions": [
-                        "Reduce sugar intake",
-                        "Exercise daily",
-                        "Monitor glucose",
-                        "Maintain healthy weight"
-                    ]
-                },
-
-                "heart disease": {
-                    "about":
-                    "Heart disease affects cardiovascular health.",
-
-                    "precautions": [
-                        "Exercise regularly",
-                        "Low-fat diet",
-                        "Avoid smoking",
-                        "Control blood pressure"
-                    ]
-                },
-
-                "covid-19": {
-                    "about":
-                    "COVID-19 is a viral infectious disease.",
-
-                    "precautions": [
-                        "Wash hands regularly",
-                        "Vaccination",
-                        "Wear masks if needed",
-                        "Maintain hygiene"
-                    ]
-                }
-            }
-
-            if disease in disease_info:
-
-                st.info(
-                    disease_info[disease]["about"]
-                )
-
-                st.write("### Precautions")
-
-                for p in disease_info[disease]["precautions"]:
-
-                    st.write("✔", p)
 
             # =========================================================
             # CHART
             # =========================================================
 
+            st.markdown(
+                '<div class="card">',
+                unsafe_allow_html=True
+            )
+
             st.subheader(
-                "📈 Similarity Score Analysis"
+                "📈 Similarity Analysis"
             )
 
             fig, ax = plt.subplots(
@@ -736,77 +688,96 @@ if find_trials:
                 top_trials["Similarity"]
             )
 
-            ax.set_xlabel("Trial ID")
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
 
-            ax.set_ylabel(
-                "Similarity Score"
-            )
+            ax.grid(alpha=0.2)
 
-            ax.set_title(
-                "Top Trial Similarity Scores"
-            )
+            plt.xticks(rotation=20)
 
             st.pyplot(fig)
+
+            st.markdown(
+                '</div>',
+                unsafe_allow_html=True
+            )
 
 # =========================================================
 # METRICS
 # =========================================================
 
-st.subheader("📊 AI System Metrics")
+st.subheader("📊 AI Infrastructure")
 
 m1, m2, m3, m4 = st.columns(4)
 
-with m1:
+cards = [
 
-    st.metric(
-        "Embedding Model",
-        "BioClinicalBERT"
-    )
+    ("🧠", "BioClinicalBERT", "Embedding Engine"),
+    ("⚡", "FAISS", "Vector Database"),
+    ("🎯", "94%", "Semantic Accuracy"),
+    ("🚀", "98%", "AI Confidence")
 
-with m2:
+]
 
-    st.metric(
-        "Vector Database",
-        "FAISS"
-    )
+for col, card in zip(
+    [m1,m2,m3,m4],
+    cards
+):
 
-with m3:
+    with col:
 
-    st.metric(
-        "Semantic Accuracy",
-        "94%"
-    )
+        st.markdown(f"""
 
-with m4:
+        <div class="metric-card">
 
-    st.metric(
-        "AI Confidence",
-        "98%"
-    )
+            <h2>{card[0]}</h2>
+
+            <h3>{card[1]}</h3>
+
+            <p>{card[2]}</p>
+
+        </div>
+
+        """, unsafe_allow_html=True)
 
 # =========================================================
 # FEATURES
 # =========================================================
 
-st.subheader("🚀 EVOASTRA Features")
+st.markdown(
+    '<div class="card">',
+    unsafe_allow_html=True
+)
+
+st.subheader("🚀 Platform Features")
 
 st.write("""
-✔ AI-Based Clinical Trial Matching  
+
+✔ AI Trial Matching  
 ✔ Biomedical NLP  
 ✔ BioClinicalBERT Embeddings  
 ✔ FAISS Semantic Search  
-✔ Disease Information  
-✔ Precautions & Prevention  
+✔ AI Healthcare Assistant  
 ✔ Clinical Trial Retrieval  
-✔ AI Healthcare Dashboard  
+✔ Healthcare Intelligence Dashboard  
+
 """)
+
+st.markdown(
+    '</div>',
+    unsafe_allow_html=True
+)
 
 # =========================================================
 # FOOTER
 # =========================================================
 
 st.markdown("""
+
 <div class="footer">
-Developed for EVOASTRA Internship Project • Biomedical AI Platform
+
+EVOASTRA AI • Professional Clinical Intelligence Platform
+
 </div>
+
 """, unsafe_allow_html=True)
