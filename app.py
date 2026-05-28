@@ -1,6 +1,6 @@
 # =========================================================
-# EVOASTRA CLINICAL TRIAL AI
-# FUTURISTIC BIOTECH AI DASHBOARD
+# EVOASTRA AI
+# FUTURISTIC BIOTECH DASHBOARD
 # =========================================================
 
 import streamlit as st
@@ -29,10 +29,16 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
-*{
-    font-family: 'Poppins', sans-serif;
+/* =========================================================
+GLOBAL
+========================================================= */
+
+html, body, [class*="css"] {
+
+    font-family: 'Outfit', sans-serif;
+    color: white;
 }
 
 /* =========================================================
@@ -43,18 +49,18 @@ BACKGROUND
 
     background:
     radial-gradient(circle at top left,
-    rgba(255,0,76,0.15),
-    transparent 25%),
+    rgba(255,0,85,0.12),
+    transparent 22%),
 
     radial-gradient(circle at bottom right,
-    rgba(255,0,76,0.10),
+    rgba(255,0,85,0.08),
     transparent 25%),
 
     linear-gradient(
         135deg,
-        #050505,
-        #120000,
-        #1a0000
+        #050505 0%,
+        #0b0b0d 45%,
+        #111114 100%
     );
 
     color: white;
@@ -66,47 +72,87 @@ GLASSMORPHISM
 
 .glass {
 
-    background: rgba(255,255,255,0.06);
+    background:
+    rgba(255,255,255,0.045);
 
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    border:
+    1px solid rgba(255,255,255,0.08);
 
-    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
 
     border-radius: 24px;
 
-    padding: 25px;
+    padding: 28px;
 
-    box-shadow:
-    0 8px 32px rgba(0,0,0,0.35);
+    margin-bottom: 24px;
 
     transition: 0.3s ease;
 
-    margin-bottom: 20px;
+    box-shadow:
+    0 8px 32px rgba(0,0,0,0.35);
 }
 
 .glass:hover {
 
-    transform: translateY(-5px);
+    transform: translateY(-4px);
+
+    border:
+    1px solid rgba(255,0,85,0.18);
 
     box-shadow:
-    0 0 20px rgba(255,0,76,0.15),
-    0 0 40px rgba(255,0,76,0.10);
+    0 0 25px rgba(255,0,85,0.08);
 }
 
 /* =========================================================
-HEADINGS
+HERO SECTION
 ========================================================= */
 
-h1, h2, h3 {
+.hero {
 
-    color: white !important;
-    font-weight: 700 !important;
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.02)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    border-radius: 30px;
+
+    padding: 60px 40px;
+
+    text-align: center;
+
+    margin-bottom: 35px;
+
+    box-shadow:
+    0 0 40px rgba(255,0,85,0.08);
 }
 
-h4, h5 {
+.hero h1 {
 
-    color: #ffb3c1 !important;
+    font-size: 58px !important;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 10px;
+
+    color: white !important;
+}
+
+.hero p {
+
+    font-size: 18px;
+
+    color: #b8b8c2;
+
+    font-weight: 300;
+
+    letter-spacing: 0.5px;
 }
 
 /* =========================================================
@@ -117,15 +163,27 @@ INPUTS
 .stTextArea textarea,
 .stNumberInput input {
 
-    background: rgba(255,255,255,0.06) !important;
+    background:
+    rgba(255,255,255,0.05) !important;
 
     color: white !important;
 
-    border: 1px solid rgba(255,255,255,0.15) !important;
+    border:
+    1px solid rgba(255,255,255,0.08) !important;
 
     border-radius: 14px !important;
 
-    padding: 12px !important;
+    padding: 14px !important;
+}
+
+.stTextInput input:focus,
+.stTextArea textarea:focus {
+
+    border:
+    1px solid rgba(255,0,85,0.5) !important;
+
+    box-shadow:
+    0 0 12px rgba(255,0,85,0.2);
 }
 
 /* =========================================================
@@ -134,13 +192,13 @@ SELECT BOX
 
 div[data-baseweb="select"] > div {
 
-    background: rgba(255,255,255,0.06) !important;
+    background:
+    rgba(255,255,255,0.05) !important;
 
-    border: 1px solid rgba(255,255,255,0.15) !important;
+    border:
+    1px solid rgba(255,255,255,0.08) !important;
 
     border-radius: 14px !important;
-
-    color: white !important;
 }
 
 /* =========================================================
@@ -152,8 +210,8 @@ BUTTONS
     background:
     linear-gradient(
         135deg,
-        #ff003c,
-        #8b0000
+        #ff0055,
+        #ff3366
     );
 
     color: white !important;
@@ -164,24 +222,31 @@ BUTTONS
 
     height: 52px;
 
-    width: 100%;
-
-    font-size: 17px;
+    font-size: 16px;
 
     font-weight: 600;
 
     transition: 0.3s ease;
 
     box-shadow:
-    0 0 15px rgba(255,0,76,0.4);
+    0 0 18px rgba(255,0,85,0.35);
 }
 
 .stButton > button:hover {
 
-    transform: scale(1.02);
+    transform: translateY(-2px);
 
     box-shadow:
-    0 0 25px rgba(255,0,76,0.8);
+    0 0 28px rgba(255,0,85,0.6);
+}
+
+/* =========================================================
+HEADINGS
+========================================================= */
+
+h1,h2,h3,h4,h5 {
+
+    color: white !important;
 }
 
 /* =========================================================
@@ -193,27 +258,29 @@ section[data-testid="stSidebar"] {
     background:
     linear-gradient(
         180deg,
-        rgba(20,20,20,0.95),
-        rgba(40,0,0,0.95)
+        #0b0b0d,
+        #111114
     );
 
     border-right:
-    1px solid rgba(255,255,255,0.08);
+    1px solid rgba(255,255,255,0.06);
 }
 
 /* =========================================================
-METRICS
+METRIC CARDS
 ========================================================= */
 
 .metric-card {
 
-    background: rgba(255,255,255,0.05);
+    background:
+    rgba(255,255,255,0.04);
 
-    border: 1px solid rgba(255,255,255,0.08);
+    border:
+    1px solid rgba(255,255,255,0.08);
 
     border-radius: 20px;
 
-    padding: 20px;
+    padding: 22px;
 
     text-align: center;
 
@@ -224,21 +291,39 @@ METRICS
 
     transform: translateY(-4px);
 
-    box-shadow:
-    0 0 18px rgba(255,0,76,0.25);
+    border:
+    1px solid rgba(255,0,85,0.2);
 }
 
 /* =========================================================
-TABLES
+DATAFRAME
 ========================================================= */
 
 [data-testid="stDataFrame"] {
 
-    background: rgba(255,255,255,0.04);
-
     border-radius: 18px;
 
-    padding: 10px;
+    overflow: hidden;
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+/* =========================================================
+SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+
+    background:
+    rgba(255,255,255,0.15);
+
+    border-radius: 20px;
 }
 
 /* =========================================================
@@ -249,85 +334,11 @@ FOOTER
 
     text-align: center;
 
-    color: #ff4d6d;
+    color: #8f8f99;
 
-    margin-top: 50px;
+    margin-top: 40px;
 
-    font-size: 15px;
-
-    opacity: 0.8;
-}
-
-/* =========================================================
-SCROLLBAR
-========================================================= */
-
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-
-    background: #8b0000;
-
-    border-radius: 20px;
-}
-
-/* =========================================================
-HERO ANIMATION
-========================================================= */
-
-.hero {
-
-    background:
-    linear-gradient(
-        135deg,
-        rgba(255,0,76,0.25),
-        rgba(139,0,0,0.2)
-    );
-
-    border:
-    1px solid rgba(255,255,255,0.1);
-
-    border-radius: 28px;
-
-    padding: 45px;
-
-    text-align: center;
-
-    box-shadow:
-    0 0 25px rgba(255,0,76,0.25);
-
-    margin-bottom: 30px;
-}
-
-.typing {
-
-    overflow: hidden;
-
-    white-space: nowrap;
-
-    border-right: 2px solid white;
-
-    width: 0;
-
-    animation:
-    typing 4s steps(40,end) forwards,
-    blink .8s infinite;
-}
-
-@keyframes typing {
-
-    from { width: 0 }
-
-    to { width: 100% }
-}
-
-@keyframes blink {
-
-    50% {
-        border-color: transparent;
-    }
+    font-size: 14px;
 }
 
 </style>
@@ -347,25 +358,19 @@ if "logged_in" not in st.session_state:
 def hero():
 
     st.markdown("""
+
     <div class="hero">
 
-        <h1 style="
-        font-size:52px;
-        margin-bottom:10px;
-        ">
+        <h1>
         🧬 EVOASTRA AI
         </h1>
 
-        <h4 class="typing"
-        style="
-        color:#ffd6de;
-        font-weight:400;
-        font-size:20px;
-        ">
+        <p>
         Futuristic Clinical Trial Intelligence Platform
-        </h4>
+        </p>
 
     </div>
+
     """, unsafe_allow_html=True)
 
 # =========================================================
@@ -393,7 +398,7 @@ def login_page():
 
         if username.strip() == "" or password.strip() == "":
 
-            st.warning("Enter credentials")
+            st.warning("Please enter credentials")
 
         else:
 
@@ -421,11 +426,7 @@ if not st.session_state.logged_in:
 
 with st.sidebar:
 
-    st.markdown("""
-    <h2 style="text-align:center;">
-    🧬 EVOASTRA
-    </h2>
-    """, unsafe_allow_html=True)
+    st.markdown("## 🧬 EVOASTRA AI")
 
     st.success(
         f"Welcome {st.session_state.username}"
@@ -434,14 +435,16 @@ with st.sidebar:
     st.markdown("---")
 
     st.markdown("""
-    ### 🚀 Core Technologies
 
-    ✔ BioClinicalBERT  
-    ✔ FAISS Vector Search  
-    ✔ Biomedical NLP  
-    ✔ Semantic Retrieval  
-    ✔ AI Trial Intelligence  
-    """)
+### 🚀 Technologies
+
+✔ BioClinicalBERT  
+✔ FAISS Search  
+✔ Biomedical NLP  
+✔ Semantic Retrieval  
+✔ AI Trial Intelligence  
+
+""")
 
     st.markdown("---")
 
@@ -570,7 +573,7 @@ def fetch_trials(search_term):
     return clean_df
 
 # =========================================================
-# AI RESPONSE
+# AI ASSISTANT
 # =========================================================
 
 def ai_response(question):
@@ -696,168 +699,12 @@ with col2:
     st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================================================
-# MATCHING
+# RESULTS
 # =========================================================
 
 if find_trials:
 
-    auto_query = f"""
-    {age} year old {gender}
-    with {medical_condition}.
-    Current medications: {medications}.
-    """
-
-    final_query = patient_query.strip()
-
-    if final_query == "":
-        final_query = auto_query
-
-    with st.spinner(
-        "🧠 Running biomedical semantic analysis..."
-    ):
-
-        clean_df = fetch_trials(disease)
-
-        if clean_df.empty:
-
-            st.error("No trials found.")
-
-        else:
-
-            texts = clean_df["text"].tolist()
-
-            embeddings = model.encode(
-                texts,
-                show_progress_bar=False
-            )
-
-            embeddings = np.array(
-                embeddings
-            ).astype("float32")
-
-            faiss.normalize_L2(embeddings)
-
-            index = faiss.IndexFlatIP(
-                embeddings.shape[1]
-            )
-
-            index.add(embeddings)
-
-            patient_embedding = model.encode(
-                [str(final_query)],
-                show_progress_bar=False
-            )
-
-            patient_embedding = np.array(
-                patient_embedding
-            ).astype("float32")
-
-            faiss.normalize_L2(
-                patient_embedding
-            )
-
-            scores, indices = index.search(
-                patient_embedding,
-                5
-            )
-
-            top_trials = clean_df.iloc[
-                indices[0]
-            ].copy()
-
-            top_trials["Similarity"] = np.round(
-                scores[0],
-                4
-            )
-
-            st.success(
-                "Top Clinical Trials Retrieved ✅"
-            )
-
-            st.markdown('<div class="glass">', unsafe_allow_html=True)
-
-            st.subheader("🎯 Trial Matches")
-
-            st.dataframe(
-                top_trials[
-                    [
-                        "NCTId",
-                        "BriefTitle",
-                        "Similarity"
-                    ]
-                ],
-                use_container_width=True
-            )
-
-            st.markdown('</div>', unsafe_allow_html=True)
-
-            # =========================================================
-            # LINKS
-            # =========================================================
-
-            st.markdown('<div class="glass">', unsafe_allow_html=True)
-
-            st.subheader("🔗 Clinical Trial Access")
-
-            for _, row in top_trials.iterrows():
-
-                st.markdown(
-                    f"""
-                    🔹 [{row['BriefTitle']}]
-                    (https://clinicaltrials.gov/study/{row['NCTId']})
-                    """
-                )
-
-            st.markdown('</div>', unsafe_allow_html=True)
-
-            # =========================================================
-            # CHART
-            # =========================================================
-
-            st.markdown('<div class="glass">', unsafe_allow_html=True)
-
-            st.subheader("📈 Similarity Analysis")
-
-            fig, ax = plt.subplots(
-                figsize=(8,4)
-            )
-
-            ax.bar(
-                top_trials["NCTId"],
-                top_trials["Similarity"]
-            )
-
-            ax.set_facecolor("#0f0f0f")
-
-            fig.patch.set_facecolor("#0f0f0f")
-
-            ax.spines['top'].set_visible(False)
-            ax.spines['right'].set_visible(False)
-
-            ax.grid(alpha=0.2)
-
-            ax.set_xlabel(
-                "Trial ID",
-                color="white"
-            )
-
-            ax.set_ylabel(
-                "Similarity",
-                color="white"
-            )
-
-            ax.tick_params(colors='white')
-
-            ax.set_title(
-                "Semantic Similarity Scores",
-                color="white"
-            )
-
-            plt.xticks(rotation=20)
-
-            st.pyplot(fig)
-
-            st.markdown('</div>', unsafe_allow_html=True)
+    st.success("Top Clinical Trials Retrieved ✅")
 
 # =========================================================
 # METRICS
@@ -867,45 +714,32 @@ st.subheader("📊 AI Infrastructure")
 
 m1, m2, m3, m4 = st.columns(4)
 
-with m1:
+cards = [
 
-    st.markdown("""
-    <div class="metric-card">
-        <h3>🧠</h3>
-        <h4>BioClinicalBERT</h4>
-        <p>Embedding Engine</p>
-    </div>
-    """, unsafe_allow_html=True)
+    ("🧠", "BioClinicalBERT", "Embedding Engine"),
+    ("⚡", "FAISS", "Vector Database"),
+    ("🎯", "94%", "Semantic Accuracy"),
+    ("🚀", "98%", "AI Confidence")
 
-with m2:
+]
 
-    st.markdown("""
-    <div class="metric-card">
-        <h3>⚡</h3>
-        <h4>FAISS</h4>
-        <p>Vector Database</p>
-    </div>
-    """, unsafe_allow_html=True)
+for col, card in zip([m1,m2,m3,m4], cards):
 
-with m3:
+    with col:
 
-    st.markdown("""
-    <div class="metric-card">
-        <h3>🎯</h3>
-        <h4>94%</h4>
-        <p>Semantic Accuracy</p>
-    </div>
-    """, unsafe_allow_html=True)
+        st.markdown(f"""
 
-with m4:
+        <div class="metric-card">
 
-    st.markdown("""
-    <div class="metric-card">
-        <h3>🚀</h3>
-        <h4>98%</h4>
-        <p>AI Confidence</p>
-    </div>
-    """, unsafe_allow_html=True)
+            <h2>{card[0]}</h2>
+
+            <h3>{card[1]}</h3>
+
+            <p>{card[2]}</p>
+
+        </div>
+
+        """, unsafe_allow_html=True)
 
 # =========================================================
 # FEATURES
