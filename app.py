@@ -1,6 +1,6 @@
 # =====================================================
-# EVOASTRA
-# COMPLETE CLEAN WORKING PROJECT
+# CLINICAL TRIAL MATCH
+# CLEAN FINAL VERSION
 # =====================================================
 
 import streamlit as st
@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 # =====================================================
 
 st.set_page_config(
-    page_title="EVOASTRA",
-    page_icon="🧬",
+    page_title="Clinical Trial Match",
+    page_icon="🩺",
     layout="wide"
 )
 
@@ -32,10 +32,6 @@ html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
-/* =====================================================
-BACKGROUND
-===================================================== */
-
 .stApp{
     background-color:#f4f7ff;
 }
@@ -45,7 +41,7 @@ HEADINGS
 ===================================================== */
 
 h1,h2,h3{
-    color:#2563eb;
+    color:#1e293b;
 }
 
 /* =====================================================
@@ -139,14 +135,14 @@ box-shadow:0 4px 15px rgba(0,0,0,0.06);
 ">
 
 <h1>
-🧬 EVOASTRA
+🩺 Clinical Trial Match
 </h1>
 
 <p style="
 font-size:18px;
 color:gray;
 ">
-Clinical Trial Recommendation System
+AI-Based Patient Trial Recommendation System
 </p>
 
 </div>
@@ -159,24 +155,23 @@ Clinical Trial Recommendation System
 
 with st.sidebar:
 
-    st.title("🧬 EVOASTRA")
+    st.title("🩺 Clinical Trial Match")
 
     st.success(
-        "Healthcare Intelligence System"
+        "Healthcare Recommendation System"
     )
 
     st.markdown("---")
 
     st.markdown("""
 
-### 🚀 Features
+### Features
 
 ✔ Trial Recommendation  
 ✔ Semantic Search  
 ✔ Disease Insights  
 ✔ Patient Analysis  
 ✔ Similarity Matching  
-✔ Clinical Support  
 
 """)
 
@@ -228,11 +223,9 @@ data = pd.DataFrame({
 @st.cache_resource
 def load_model():
 
-    model = SentenceTransformer(
+    return SentenceTransformer(
         'all-MiniLM-L6-v2'
     )
-
-    return model
 
 model = load_model()
 
@@ -248,11 +241,7 @@ col1, col2 = st.columns(2)
 
 with col1:
 
-    st.subheader("🩺 Patient Information")
-
-    # =================================================
-    # DISEASE
-    # =================================================
+    st.subheader("Patient Information")
 
     disease = st.selectbox(
 
@@ -267,20 +256,12 @@ with col1:
         ]
     )
 
-    # =================================================
-    # AGE
-    # =================================================
-
     age = st.slider(
         "Select Age",
         1,
         100,
         35
     )
-
-    # =================================================
-    # GENDER
-    # =================================================
 
     gender = st.radio(
 
@@ -292,10 +273,6 @@ with col1:
             "Other"
         ]
     )
-
-    # =================================================
-    # SYMPTOMS
-    # =================================================
 
     symptoms = st.multiselect(
 
@@ -312,21 +289,13 @@ with col1:
         ]
     )
 
-    # =================================================
-    # NOTES
-    # =================================================
-
     patient_notes = st.text_area(
-        "Additional Patient Notes",
+        "Additional Notes",
         height=150
     )
 
-    # =================================================
-    # BUTTON
-    # =================================================
-
     find_btn = st.button(
-        "🔍 Find Matching Trials"
+        "Find Matching Trials"
     )
 
 # =====================================================
@@ -335,100 +304,62 @@ with col1:
 
 with col2:
 
-    st.subheader("🩺 Clinical Support Assistant")
+    st.subheader("Clinical Information")
 
     question = st.selectbox(
 
         "Choose Topic",
 
         [
-            "What is cancer?",
-            "What is diabetes?",
-            "What is heart disease?",
-            "What is COVID-19?",
-            "What is BioClinicalBERT?"
+            "Cancer Information",
+            "Diabetes Information",
+            "Heart Disease Information",
+            "COVID-19 Information"
         ]
     )
 
     ask_btn = st.button(
-        "⚡ Generate Information"
+        "Generate Information"
     )
-
-    # =================================================
-    # RESPONSES
-    # =================================================
 
     if ask_btn:
 
-        if "cancer" in question.lower():
+        if "Cancer" in question:
 
             st.info("""
 
-### 🧬 Cancer Information
-
-Cancer clinical trials usually focus on:
+### Cancer Information
 
 • Immunotherapy  
 • Precision medicine  
-• Radiation treatment  
 • Chemotherapy  
-• Early detection systems  
-
-Patients may qualify based on:
-• Age
-• Cancer stage
-• Medical history
-• Previous treatments
+• Radiation therapy  
+• Clinical monitoring  
 
 """)
 
-        elif "diabetes" in question.lower():
+        elif "Diabetes" in question:
 
             st.info("""
 
-### 🩺 Diabetes Information
+### Diabetes Information
 
-Diabetes studies focus on:
-
-• Blood sugar monitoring  
 • Insulin therapy  
+• Glucose monitoring  
 • Diet management  
 • Lifestyle improvement  
-• AI-based glucose prediction  
-
-Clinical trials help improve long-term diabetes care.
 
 """)
 
-        elif "heart" in question.lower():
+        elif "Heart" in question:
 
             st.info("""
 
-### ❤️ Heart Disease Information
+### Heart Disease Information
 
-Heart disease research evaluates:
-
-• Cardiovascular treatments  
 • Blood pressure control  
-• Heart monitoring systems  
+• Cardiovascular monitoring  
 • Lifestyle interventions  
-• AI-assisted diagnostics  
-
-""")
-
-        elif "covid" in question.lower():
-
-            st.info("""
-
-### 🦠 COVID-19 Information
-
-COVID trials commonly study:
-
-• Vaccine effectiveness  
-• Immune response  
-• Antiviral treatments  
-• Long COVID symptoms  
-• Respiratory therapies  
 
 """)
 
@@ -436,20 +367,16 @@ COVID trials commonly study:
 
             st.info("""
 
-### 🧠 BioClinicalBERT
+### COVID-19 Information
 
-BioClinicalBERT is a biomedical language model used for:
-
-• Clinical text understanding  
-• Semantic similarity  
-• Healthcare NLP  
-• Biomedical search systems  
-• Patient-trial matching  
+• Vaccine effectiveness  
+• Antiviral medicines  
+• Immune response studies  
 
 """)
 
 # =====================================================
-# AI MATCHING SYSTEM
+# MATCHING SYSTEM
 # =====================================================
 
 if find_btn:
@@ -461,10 +388,6 @@ if find_btn:
     {patient_notes}
     """
 
-    # =================================================
-    # EMBEDDINGS
-    # =================================================
-
     trial_embeddings = model.encode(
         data["Description"].tolist()
     )
@@ -472,10 +395,6 @@ if find_btn:
     patient_embedding = model.encode(
         [str(patient_text)]
     )
-
-    # =================================================
-    # SIMILARITY
-    # =================================================
 
     similarity_scores = cosine_similarity(
 
@@ -494,22 +413,14 @@ if find_btn:
         ascending=False
     )
 
-    # =================================================
-    # RESULTS
-    # =================================================
-
     st.subheader(
-        "🎯 Recommended Clinical Trials"
+        "Recommended Clinical Trials"
     )
 
     st.dataframe(
         results,
         use_container_width=True
     )
-
-    # =================================================
-    # BEST MATCH
-    # =================================================
 
     best_trial = results.iloc[0]
 
@@ -531,7 +442,7 @@ Similarity Score:
     # =================================================
 
     st.subheader(
-        "📈 Similarity Analysis"
+        "Similarity Analysis"
     )
 
     fig, ax = plt.subplots(
@@ -544,6 +455,7 @@ Similarity Score:
     )
 
     ax.spines['top'].set_visible(False)
+
     ax.spines['right'].set_visible(False)
 
     ax.grid(alpha=0.2)
@@ -551,35 +463,6 @@ Similarity Score:
     plt.xticks(rotation=20)
 
     st.pyplot(fig)
-
-# =====================================================
-# METRICS
-# =====================================================
-
-st.subheader("📊 System Metrics")
-
-m1, m2, m3 = st.columns(3)
-
-with m1:
-
-    st.metric(
-        "Model",
-        "MiniLM"
-    )
-
-with m2:
-
-    st.metric(
-        "Accuracy",
-        "94%"
-    )
-
-with m3:
-
-    st.metric(
-        "Search",
-        "Semantic Matching"
-    )
 
 # =====================================================
 # FOOTER
@@ -593,7 +476,7 @@ margin-top:40px;
 color:gray;
 ">
 
-EVOASTRA • Healthcare Intelligence Platform
+Clinical Trial Match • Healthcare Recommendation Platform
 
 </div>
 
