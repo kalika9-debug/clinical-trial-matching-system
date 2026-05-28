@@ -1,7 +1,6 @@
 # =====================================================
-# EVOASTRA AI
-# COMPLETE WORKING HEALTHCARE AI PROJECT
-# FIXED VERSION
+# EVOASTRA
+# COMPLETE CLEAN WORKING PROJECT
 # =====================================================
 
 import streamlit as st
@@ -15,7 +14,7 @@ import matplotlib.pyplot as plt
 # =====================================================
 
 st.set_page_config(
-    page_title="EVOASTRA AI",
+    page_title="EVOASTRA",
     page_icon="🧬",
     layout="wide"
 )
@@ -33,26 +32,12 @@ html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
-.stApp{
-    background-color:#f4f7ff;
-}
-
 /* =====================================================
-CARDS
+BACKGROUND
 ===================================================== */
 
-.card{
-
-    background:white;
-
-    padding:25px;
-
-    border-radius:18px;
-
-    box-shadow:
-    0 4px 15px rgba(0,0,0,0.08);
-
-    margin-bottom:20px;
+.stApp{
+    background-color:#f4f7ff;
 }
 
 /* =====================================================
@@ -105,7 +90,7 @@ INPUTS
     1px solid #dbeafe !important;
 
     background:
-    #f9fbff !important;
+    #ffffff !important;
 }
 
 /* =====================================================
@@ -120,7 +105,7 @@ div[data-baseweb="select"] > div{
     1px solid #dbeafe !important;
 
     background:
-    #f9fbff !important;
+    #ffffff !important;
 }
 
 /* =====================================================
@@ -135,24 +120,6 @@ section[data-testid="stSidebar"]{
     1px solid #e5e7eb;
 }
 
-/* =====================================================
-METRICS
-===================================================== */
-
-.metric-card{
-
-    background:white;
-
-    padding:20px;
-
-    border-radius:15px;
-
-    text-align:center;
-
-    box-shadow:
-    0 4px 12px rgba(0,0,0,0.06);
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -162,10 +129,17 @@ METRICS
 
 st.markdown("""
 
-<div class="card" style="text-align:center;">
+<div style="
+background:white;
+padding:35px;
+border-radius:20px;
+text-align:center;
+margin-bottom:25px;
+box-shadow:0 4px 15px rgba(0,0,0,0.06);
+">
 
 <h1>
-🧬 EVOASTRA AI
+🧬 EVOASTRA
 </h1>
 
 <p style="
@@ -185,7 +159,7 @@ Clinical Trial Recommendation System
 
 with st.sidebar:
 
-    st.title("🧬 EVOASTRA AI")
+    st.title("🧬 EVOASTRA")
 
     st.success(
         "Healthcare Intelligence System"
@@ -197,17 +171,17 @@ with st.sidebar:
 
 ### 🚀 Features
 
-✔ AI Trial Matching  
-✔ Healthcare AI Assistant  
+✔ Trial Recommendation  
 ✔ Semantic Search  
-✔ Disease Intelligence  
-✔ Clinical Recommendations  
-✔ Similarity Analysis  
+✔ Disease Insights  
+✔ Patient Analysis  
+✔ Similarity Matching  
+✔ Clinical Support  
 
 """)
 
 # =====================================================
-# SAMPLE DATASET
+# DATASET
 # =====================================================
 
 data = pd.DataFrame({
@@ -273,11 +247,6 @@ col1, col2 = st.columns(2)
 # =====================================================
 
 with col1:
-
-    st.markdown(
-        '<div class="card">',
-        unsafe_allow_html=True
-    )
 
     st.subheader("🩺 Patient Information")
 
@@ -360,27 +329,17 @@ with col1:
         "🔍 Find Matching Trials"
     )
 
-    st.markdown(
-        '</div>',
-        unsafe_allow_html=True
-    )
-
 # =====================================================
 # RIGHT SIDE
 # =====================================================
 
 with col2:
 
-    st.markdown(
-        '<div class="card">',
-        unsafe_allow_html=True
-    )
-
-    st.subheader("🤖 Healthcare AI Assistant")
+    st.subheader("🩺 Clinical Support Assistant")
 
     question = st.selectbox(
 
-        "Ask AI",
+        "Choose Topic",
 
         [
             "What is cancer?",
@@ -392,62 +351,102 @@ with col2:
     )
 
     ask_btn = st.button(
-        "⚡ Generate AI Response"
+        "⚡ Generate Information"
     )
 
     # =================================================
-    # AI RESPONSES
+    # RESPONSES
     # =================================================
 
     if ask_btn:
 
         if "cancer" in question.lower():
 
-            st.success("""
-Cancer trials study:
-• Immunotherapy
-• Targeted therapy
-• Precision medicine
-• Survival treatments
+            st.info("""
+
+### 🧬 Cancer Information
+
+Cancer clinical trials usually focus on:
+
+• Immunotherapy  
+• Precision medicine  
+• Radiation treatment  
+• Chemotherapy  
+• Early detection systems  
+
+Patients may qualify based on:
+• Age
+• Cancer stage
+• Medical history
+• Previous treatments
+
 """)
 
         elif "diabetes" in question.lower():
 
-            st.success("""
-Diabetes research focuses on:
-• Insulin therapy
-• Glucose monitoring
-• Lifestyle management
+            st.info("""
+
+### 🩺 Diabetes Information
+
+Diabetes studies focus on:
+
+• Blood sugar monitoring  
+• Insulin therapy  
+• Diet management  
+• Lifestyle improvement  
+• AI-based glucose prediction  
+
+Clinical trials help improve long-term diabetes care.
+
 """)
 
         elif "heart" in question.lower():
 
-            st.success("""
-Heart disease trials evaluate:
-• Cardiovascular treatments
-• Heart monitoring
-• Blood pressure therapies
+            st.info("""
+
+### ❤️ Heart Disease Information
+
+Heart disease research evaluates:
+
+• Cardiovascular treatments  
+• Blood pressure control  
+• Heart monitoring systems  
+• Lifestyle interventions  
+• AI-assisted diagnostics  
+
 """)
 
         elif "covid" in question.lower():
 
-            st.success("""
-COVID studies focus on:
-• Vaccines
-• Antiviral medicines
-• Immune response
+            st.info("""
+
+### 🦠 COVID-19 Information
+
+COVID trials commonly study:
+
+• Vaccine effectiveness  
+• Immune response  
+• Antiviral treatments  
+• Long COVID symptoms  
+• Respiratory therapies  
+
 """)
 
         else:
 
-            st.success("""
-BioClinicalBERT converts biomedical text into semantic embeddings for AI healthcare systems.
-""")
+            st.info("""
 
-    st.markdown(
-        '</div>',
-        unsafe_allow_html=True
-    )
+### 🧠 BioClinicalBERT
+
+BioClinicalBERT is a biomedical language model used for:
+
+• Clinical text understanding  
+• Semantic similarity  
+• Healthcare NLP  
+• Biomedical search systems  
+• Patient-trial matching  
+
+""")
 
 # =====================================================
 # AI MATCHING SYSTEM
@@ -463,7 +462,7 @@ if find_btn:
     """
 
     # =================================================
-    # CREATE EMBEDDINGS
+    # EMBEDDINGS
     # =================================================
 
     trial_embeddings = model.encode(
@@ -475,7 +474,7 @@ if find_btn:
     )
 
     # =================================================
-    # CALCULATE SIMILARITY
+    # SIMILARITY
     # =================================================
 
     similarity_scores = cosine_similarity(
@@ -496,13 +495,8 @@ if find_btn:
     )
 
     # =================================================
-    # RESULTS TABLE
+    # RESULTS
     # =================================================
-
-    st.markdown(
-        '<div class="card">',
-        unsafe_allow_html=True
-    )
 
     st.subheader(
         "🎯 Recommended Clinical Trials"
@@ -527,24 +521,14 @@ Best Match:
 Condition:
 {best_trial['Condition']}
 
-AI Match Score:
+Similarity Score:
 {round(best_trial['Similarity'] * 100, 2)}%
 
 """)
 
-    st.markdown(
-        '</div>',
-        unsafe_allow_html=True
-    )
-
     # =================================================
     # CHART
     # =================================================
-
-    st.markdown(
-        '<div class="card">',
-        unsafe_allow_html=True
-    )
 
     st.subheader(
         "📈 Similarity Analysis"
@@ -568,57 +552,34 @@ AI Match Score:
 
     st.pyplot(fig)
 
-    st.markdown(
-        '</div>',
-        unsafe_allow_html=True
-    )
-
 # =====================================================
 # METRICS
 # =====================================================
 
-st.subheader("📊 AI Metrics")
+st.subheader("📊 System Metrics")
 
 m1, m2, m3 = st.columns(3)
 
 with m1:
 
-    st.markdown("""
-
-    <div class="metric-card">
-
-    <h3>🧠 AI Model</h3>
-    <h2>MiniLM</h2>
-
-    </div>
-
-    """, unsafe_allow_html=True)
+    st.metric(
+        "Model",
+        "MiniLM"
+    )
 
 with m2:
 
-    st.markdown("""
-
-    <div class="metric-card">
-
-    <h3>🎯 Accuracy</h3>
-    <h2>94%</h2>
-
-    </div>
-
-    """, unsafe_allow_html=True)
+    st.metric(
+        "Accuracy",
+        "94%"
+    )
 
 with m3:
 
-    st.markdown("""
-
-    <div class="metric-card">
-
-    <h3>⚡ Search Type</h3>
-    <h2>Semantic AI</h2>
-
-    </div>
-
-    """, unsafe_allow_html=True)
+    st.metric(
+        "Search",
+        "Semantic Matching"
+    )
 
 # =====================================================
 # FOOTER
@@ -632,7 +593,7 @@ margin-top:40px;
 color:gray;
 ">
 
-EVOASTRA AI • Healthcare Intelligence Platform
+EVOASTRA • Healthcare Intelligence Platform
 
 </div>
 
