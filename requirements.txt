@@ -1,10 +1,12 @@
 streamlit
-requests
 pandas
 numpy
 matplotlib
+requests
 beautifulsoup4
 sentence-transformers
 transformers
-torch
 faiss-cpu
+torch
+torchvision
+google-generativeai
